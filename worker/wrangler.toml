@@ -1,0 +1,11 @@
+name = "mediapulse-analyst"
+main = "src/index.ts"
+compatibility_date = "2025-03-01"
+
+# Optional: restrict which origins can call the Worker.
+# Leave unset or "*" while developing; tighten for production.
+# [vars]
+# ALLOWED_ORIGINS = "https://huggingface.co,https://your-portfolio.com"
+
+# Secrets are set with `wrangler secret put`, not in this file:
+#   npx wrangler secret put ANTHROPIC_API_KEY

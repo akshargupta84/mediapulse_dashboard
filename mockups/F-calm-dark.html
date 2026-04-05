@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1280"/>
+<title>MediaPulse — Calm Dark</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0e0e12;
+    --bg-2: #16161c;
+    --bg-3: #1d1d25;
+    --bg-4: #24242e;
+    --line: #24242e;
+    --line-2: #2e2e3a;
+    --tx: #eaeaf0;
+    --tx-2: #a0a0ab;
+    --tx-3: #6e6e78;
+    --tx-4: #4a4a54;
+    --accent: #8b8cf7;
+    --accent-2: #5ec2b2;
+    --up: #6bcf8a;
+    --down: #f87171;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; background: var(--bg); color: var(--tx);
+    font-family: 'Geist', sans-serif;
+    font-size: 13px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .tnum { font-variant-numeric: tabular-nums; font-family: 'Geist Mono', ui-monospace, monospace; }
+
+  .layout { display: grid; grid-template-columns: 220px 1fr; min-height: 100vh; }
+
+  /* SIDEBAR */
+  aside.side {
+    background: var(--bg);
+    border-right: 1px solid var(--line);
+    padding: 20px 14px;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 10px 18px;
+    font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+  }
+  .brand .logo {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    position: relative;
+  }
+  .brand .logo:after {
+    content: ''; position: absolute; inset: 4px; background: var(--bg); border-radius: 3px;
+  }
+  .brand .logo:before {
+    content: ''; position: absolute; inset: 8px; background: var(--tx); border-radius: 1px;
+  }
+  .navlabel {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--tx-4); padding: 14px 10px 4px;
+    font-weight: 500;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    color: var(--tx-2);
+    text-decoration: none;
+    font-size: 13px; font-weight: 500;
+    cursor: pointer;
+  }
+  .nav-item:hover { background: var(--bg-2); color: var(--tx); }
+  .nav-item.active { background: var(--bg-3); color: var(--tx); }
+  .nav-item .ic {
+    width: 14px; height: 14px; opacity: 0.7;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .nav-item .ic svg { width: 14px; height: 14px; stroke-width: 1.8; stroke: currentColor; fill: none; }
+  .nav-item .badge {
+    margin-left: auto;
+    font-size: 10px; padding: 0 6px; border-radius: 10px;
+    background: var(--bg-3); color: var(--tx-3);
+    font-variant-numeric: tabular-nums;
+  }
+  .side .foot { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 10px; padding-left: 10px; }
+  .side .foot .av { width: 26px; height: 26px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; color: var(--bg); }
+  .side .foot .who { font-size: 12px; font-weight: 500; }
+  .side .foot .who small { display: block; color: var(--tx-3); font-size: 10px; font-weight: 400; }
+
+  /* MAIN */
+  main { padding: 20px 28px 48px; min-width: 0; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar h1 { margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.012em; }
+  .topbar .crumb { font-size: 12px; color: var(--tx-3); margin-bottom: 4px; }
+  .topbar .tools { display: flex; align-items: center; gap: 8px; }
+  .btn {
+    padding: 6px 11px;
+    border-radius: 6px;
+    background: var(--bg-2);
+    border: 1px solid var(--line-2);
+    color: var(--tx-2);
+    font: inherit; font-size: 12px; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+  }
+  .btn:hover { background: var(--bg-3); color: var(--tx); }
+  .btn.primary { background: var(--tx); color: var(--bg); border-color: var(--tx); }
+  .btn .kbd { font-family: 'Geist Mono', monospace; font-size: 10px; color: var(--tx-3); padding: 1px 5px; background: var(--bg); border: 1px solid var(--line); border-radius: 3px; margin-left: 4px; }
+  .btn .caret { color: var(--tx-3); font-size: 10px; }
+
+  /* FILTER BAR */
+  .filters {
+    display: flex; align-items: center; gap: 8px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .filters .grp { display: flex; gap: 6px; }
+  .filters .sep { width: 1px; height: 20px; background: var(--line); }
+  .filters .right { margin-left: auto; display: flex; gap: 6px; align-items: center; font-size: 11px; color: var(--tx-3); }
+  .filters .right .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--up); box-shadow: 0 0 6px rgba(107,207,138,0.6); }
+
+  /* KPI ROW */
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding-top: 16px;
+  }
+  .card {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 14px 16px;
+  }
+  .kpi .label {
+    font-size: 11px; color: var(--tx-3); font-weight: 500;
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 6px;
+  }
+  .kpi .label .info { opacity: 0.5; }
+  .kpi .val {
+    font-size: 26px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .kpi .val .unit { font-size: 13px; color: var(--tx-3); font-weight: 500; margin-left: 2px; }
+  .kpi .deltaline {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 10px;
+  }
+  .pill {
+    padding: 2px 7px; border-radius: 10px;
+    font-size: 10px; font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .pill.up { background: rgba(107,207,138,0.12); color: var(--up); }
+  .pill.down { background: rgba(248,113,113,0.12); color: var(--down); }
+  .kpi .deltaline small { color: var(--tx-3); font-size: 10px; }
+  .kpi .mini { margin-top: 10px; height: 28px; }
+  .kpi .mini svg { width: 100%; height: 100%; display: block; }
+
+  /* MAIN GRID */
+  .grid {
+    display: grid; grid-template-columns: 2fr 1fr; gap: 10px; margin-top: 10px;
+  }
+  .section-h {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .section-h .left { display: flex; align-items: baseline; gap: 10px; }
+  .section-h h3 { margin: 0; font-size: 13px; font-weight: 600; letter-spacing: -0.005em; }
+  .section-h .sub { font-size: 11px; color: var(--tx-3); font-weight: 400; }
+  .section-h .segmented {
+    display: inline-flex;
+    padding: 2px;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+  }
+  .section-h .segmented button {
+    background: none; border: none; padding: 3px 9px;
+    font: inherit; font-size: 11px; font-weight: 500;
+    color: var(--tx-3); cursor: pointer; border-radius: 4px;
+  }
+  .section-h .segmented button.on { background: var(--bg-3); color: var(--tx); }
+
+  .trend svg { width: 100%; height: 244px; display: block; }
+  .legend {
+    display: flex; gap: 16px; padding-top: 10px; margin-top: 6px;
+    border-top: 1px solid var(--line);
+    font-size: 11px; color: var(--tx-2);
+  }
+  .legend span { display: flex; align-items: center; gap: 6px; }
+  .legend i { width: 10px; height: 2px; display: inline-block; }
+
+  /* CHANNELS */
+  .chan {
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 8px; padding: 10px 0;
+    align-items: center;
+  }
+  .chan + .chan { border-top: 1px solid var(--line); }
+  .chan .name { font-size: 13px; font-weight: 500; color: var(--tx); }
+  .chan .name small { display: block; color: var(--tx-3); font-size: 10px; font-weight: 400; }
+  .chan .right { text-align: right; }
+  .chan .right .pct { font-variant-numeric: tabular-nums; font-weight: 600; font-size: 13px; }
+  .chan .right small { display: block; font-size: 10px; color: var(--tx-3); font-variant-numeric: tabular-nums; }
+  .chan .bar { grid-column: 1/3; height: 3px; background: var(--bg-3); border-radius: 2px; position: relative; }
+  .chan .bar i { position: absolute; inset: 0 auto 0 0; background: var(--tx-2); border-radius: 2px; }
+  .chan:first-child .bar i { background: var(--accent); }
+
+  /* TABLE */
+  .table-card { padding: 0; overflow: hidden; margin-top: 10px; }
+  .table-card .head { padding: 14px 16px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+  .table-card h3 { margin: 0; font-size: 13px; font-weight: 600; }
+  table.t { width: 100%; border-collapse: collapse; }
+  table.t thead th {
+    text-align: left;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+    font-weight: 600; color: var(--tx-3);
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg);
+  }
+  table.t thead th.num { text-align: right; }
+  table.t tbody td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px; vertical-align: middle;
+  }
+  table.t tbody tr:last-child td { border-bottom: none; }
+  table.t tbody tr:hover td { background: var(--bg-3); }
+  table.t .num { text-align: right; font-variant-numeric: tabular-nums; font-family: 'Geist Mono', monospace; font-size: 12px; color: var(--tx-2); }
+  table.t .name { color: var(--tx); font-weight: 500; }
+  table.t .name small { display: block; color: var(--tx-3); font-size: 11px; font-weight: 400; margin-top: 1px; }
+  .chan-tag {
+    display: inline-block;
+    padding: 2px 7px; border-radius: 10px;
+    background: var(--bg-3); color: var(--tx-2);
+    font-size: 10px; font-weight: 500;
+  }
+  .status-dot {
+    display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--tx-2);
+  }
+  .status-dot i { width: 6px; height: 6px; border-radius: 50%; background: var(--up); }
+  .status-dot.p i { background: var(--tx-4); }
+  .roas-good { color: var(--up); font-weight: 600; }
+  .roas-bad { color: var(--down); font-weight: 600; }
+  .roas-mid { color: var(--tx); font-weight: 600; }
+
+  .foot-m { display: flex; justify-content: space-between; padding: 14px 0 0; font-size: 11px; color: var(--tx-4); margin-top: 16px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="side">
+      <div class="brand"><span class="logo"></span>MediaPulse</div>
+
+      <div class="navlabel">Workspace</div>
+      <a class="nav-item active"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9M5 10v10h14V10"/></svg></span>Overview</a>
+      <a class="nav-item"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg></span>Channels<span class="badge">5</span></a>
+      <a class="nav-item"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span>Campaigns<span class="badge">32</span></a>
+      <a class="nav-item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16l-4 6v7l-8-3v-4z"/></svg></span>Funnel</a>
+      <a class="nav-item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9"/><path d="M12 7v5l3 3"/></svg></span>History</a>
+
+      <div class="navlabel">Intelligence</div>
+      <a class="nav-item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l3 7h7l-5.5 4 2 7L12 17l-6.5 4 2-7L2 10h7z"/></svg></span>Analyst<span class="badge">AI</span></a>
+      <a class="nav-item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 17h16M4 12h16M4 7h16"/></svg></span>Reports</a>
+
+      <div class="foot">
+        <div class="av">AG</div>
+        <div class="who">Akshar G.<small>Portfolio</small></div>
+      </div>
+    </aside>
+
+    <main>
+      <div class="topbar">
+        <div>
+          <div class="crumb">Workspace &nbsp;/&nbsp; Overview</div>
+          <h1>Overview</h1>
+        </div>
+        <div class="tools">
+          <button class="btn">Compare Q4 2024 <span class="caret">▾</span></button>
+          <button class="btn">Export</button>
+          <button class="btn primary">Ask Claude <span class="kbd">⌘J</span></button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <div class="grp">
+          <button class="btn">Q1 2025 <span class="caret">▾</span></button>
+          <button class="btn">All channels <span class="caret">▾</span></button>
+          <button class="btn">All statuses <span class="caret">▾</span></button>
+        </div>
+        <div class="sep"></div>
+        <div class="grp">
+          <button class="btn">Weekly <span class="caret">▾</span></button>
+        </div>
+        <div class="right"><span class="pulse"></span> Live · synced 14:22 UTC</div>
+      </div>
+
+      <section class="kpis">
+        <div class="card kpi">
+          <div class="label">Total spend <span class="info">ⓘ</span></div>
+          <div class="val">$2.85<span class="unit">M</span></div>
+          <div class="deltaline">
+            <span class="pill up">+6.9%</span>
+            <small>vs Q4 2024</small>
+          </div>
+          <div class="mini"><svg viewBox="0 0 160 28" preserveAspectRatio="none"><path d="M0,20 L14,18 L28,15 L42,17 L56,12 L70,8 L84,11 L98,14 L112,9 L126,5 L140,3 L160,5" fill="none" stroke="#a0a0ab" stroke-width="1.4"/></svg></div>
+        </div>
+        <div class="card kpi">
+          <div class="label">Blended ROAS <span class="info">ⓘ</span></div>
+          <div class="val">4.28<span class="unit">×</span></div>
+          <div class="deltaline">
+            <span class="pill up">+0.31</span>
+            <small>best on record</small>
+          </div>
+          <div class="mini"><svg viewBox="0 0 160 28" preserveAspectRatio="none"><path d="M0,18 L14,16 L28,14 L42,18 L56,12 L70,8 L84,10 L98,13 L112,9 L126,5 L140,3 L160,6" fill="none" stroke="#8b8cf7" stroke-width="1.6"/></svg></div>
+        </div>
+        <div class="card kpi">
+          <div class="label">Cost per acq. <span class="info">ⓘ</span></div>
+          <div class="val">$37.80</div>
+          <div class="deltaline">
+            <span class="pill up">−$2.40</span>
+            <small>3rd quarter down</small>
+          </div>
+          <div class="mini"><svg viewBox="0 0 160 28" preserveAspectRatio="none"><path d="M0,5 L14,7 L28,9 L42,8 L56,11 L70,14 L84,13 L98,15 L112,17 L126,19 L140,21 L160,22" fill="none" stroke="#a0a0ab" stroke-width="1.4"/></svg></div>
+        </div>
+        <div class="card kpi">
+          <div class="label">Conversions <span class="info">ⓘ</span></div>
+          <div class="val">18,642</div>
+          <div class="deltaline">
+            <span class="pill up">+12.4%</span>
+            <small>vs Q4 2024</small>
+          </div>
+          <div class="mini"><svg viewBox="0 0 160 28" preserveAspectRatio="none"><path d="M0,22 L14,19 L28,16 L42,18 L56,13 L70,9 L84,11 L98,14 L112,10 L126,6 L140,4 L160,5" fill="none" stroke="#5ec2b2" stroke-width="1.4"/></svg></div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <div class="card trend">
+          <div class="section-h">
+            <div class="left">
+              <h3>Spend &amp; ROAS</h3>
+              <span class="sub">13-week window</span>
+            </div>
+            <div class="segmented">
+              <button>7d</button><button>30d</button><button class="on">13w</button><button>YTD</button>
+            </div>
+          </div>
+          <svg viewBox="0 0 800 240" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="df" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#8b8cf7" stop-opacity="0.22"/>
+                <stop offset="1" stop-color="#8b8cf7" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <g stroke="#24242e" stroke-width="1">
+              <line x1="0" y1="40"  x2="800" y2="40"/>
+              <line x1="0" y1="100" x2="800" y2="100"/>
+              <line x1="0" y1="160" x2="800" y2="160"/>
+            </g>
+            <g font-family="Geist Mono" font-size="9" fill="#6e6e78">
+              <text x="2" y="36">5.0×</text><text x="2" y="96">4.5×</text><text x="2" y="156">4.0×</text>
+            </g>
+            <!-- area -->
+            <path d="M40,170 L100,150 L160,130 L220,146 L280,108 L340,82 L400,100 L460,124 L520,90 L580,62 L640,46 L700,60 L760,72 L760,220 L40,220 Z" fill="url(#df)"/>
+            <!-- ROAS line (accent) -->
+            <path d="M40,170 L100,150 L160,130 L220,146 L280,108 L340,82 L400,100 L460,124 L520,90 L580,62 L640,46 L700,60 L760,72" fill="none" stroke="#8b8cf7" stroke-width="2"/>
+            <!-- Spend line (muted) -->
+            <path d="M40,180 L100,164 L160,146 L220,158 L280,128 L340,102 L400,118 L460,140 L520,110 L580,82 L640,66 L700,80 L760,92" fill="none" stroke="#a0a0ab" stroke-width="1.4" stroke-dasharray="3 4"/>
+            <!-- dots -->
+            <g>
+              <circle cx="760" cy="72" r="3" fill="#0e0e12" stroke="#8b8cf7" stroke-width="1.5"/>
+            </g>
+            <!-- hover marker -->
+            <g>
+              <line x1="580" y1="0" x2="580" y2="220" stroke="#2e2e3a" stroke-width="1" stroke-dasharray="2 3"/>
+              <circle cx="580" cy="62" r="4" fill="#0e0e12" stroke="#8b8cf7" stroke-width="1.8"/>
+              <g transform="translate(590,40)">
+                <rect x="0" y="0" width="114" height="52" rx="6" fill="#16161c" stroke="#2e2e3a"/>
+                <text x="10" y="16" font-family="Geist" font-size="10" fill="#6e6e78">Week 11 · Mar 17</text>
+                <text x="10" y="32" font-family="Geist Mono" font-size="12" fill="#eaeaf0">ROAS  4.67×</text>
+                <text x="10" y="46" font-family="Geist Mono" font-size="11" fill="#a0a0ab">Spend $258k</text>
+              </g>
+            </g>
+            <g font-family="Geist" font-size="10" fill="#6e6e78">
+              <text x="40" y="234">Jan 6</text>
+              <text x="220" y="234">Jan 27</text>
+              <text x="400" y="234">Feb 17</text>
+              <text x="580" y="234">Mar 10</text>
+              <text x="760" y="234" text-anchor="end">Mar 31</text>
+            </g>
+          </svg>
+          <div class="legend">
+            <span><i style="background:#8b8cf7"></i> Blended ROAS</span>
+            <span><i style="background:#a0a0ab"></i> Spend (indexed)</span>
+          </div>
+        </div>
+
+        <aside class="card">
+          <div class="section-h">
+            <div class="left"><h3>Channel mix</h3><span class="sub">share · ROAS</span></div>
+          </div>
+          <div class="chan">
+            <div class="name">Meta<small>Paid social</small></div>
+            <div class="right"><div class="pct">38%</div><small>4.41× · $1.08M</small></div>
+            <div class="bar"><i style="width:100%"></i></div>
+          </div>
+          <div class="chan">
+            <div class="name">Google<small>Search · PMax</small></div>
+            <div class="right"><div class="pct">29%</div><small>5.62× · $826k</small></div>
+            <div class="bar"><i style="width:76%"></i></div>
+          </div>
+          <div class="chan">
+            <div class="name">TikTok<small>Creator</small></div>
+            <div class="right"><div class="pct">17%</div><small>3.94× · $484k</small></div>
+            <div class="bar"><i style="width:45%"></i></div>
+          </div>
+          <div class="chan">
+            <div class="name">LinkedIn<small>B2B demand</small></div>
+            <div class="right"><div class="pct">9%</div><small>3.71× · $256k</small></div>
+            <div class="bar"><i style="width:24%"></i></div>
+          </div>
+          <div class="chan">
+            <div class="name">YouTube<small>Pre-roll</small></div>
+            <div class="right"><div class="pct">7%</div><small>2.90× · $199k</small></div>
+            <div class="bar"><i style="width:18%"></i></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="card table-card">
+        <div class="head">
+          <h3>Top campaigns</h3>
+          <button class="btn">View all 32 →</button>
+        </div>
+        <table class="t">
+          <thead>
+            <tr>
+              <th>Campaign</th>
+              <th>Channel</th>
+              <th>Status</th>
+              <th class="num">Spend</th>
+              <th class="num">Conv.</th>
+              <th class="num">CPA</th>
+              <th class="num">ROAS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="name">Brand Search — Exact<small>Evergreen · always-on</small></td>
+              <td><span class="chan-tag">Google</span></td>
+              <td><span class="status-dot"><i></i>Active</span></td>
+              <td class="num">$298,110</td>
+              <td class="num">5,840</td>
+              <td class="num">$51.04</td>
+              <td class="num roas-good">6.30×</td>
+            </tr>
+            <tr>
+              <td class="name">Spring Collection Launch<small>Six-week push</small></td>
+              <td><span class="chan-tag">Meta</span></td>
+              <td><span class="status-dot"><i></i>Active</span></td>
+              <td class="num">$412,420</td>
+              <td class="num">7,210</td>
+              <td class="num">$57.20</td>
+              <td class="num roas-mid">5.10×</td>
+            </tr>
+            <tr>
+              <td class="name">Creator Seeding — Q1<small>18 creators · 4 markets</small></td>
+              <td><span class="chan-tag">TikTok</span></td>
+              <td><span class="status-dot"><i></i>Active</span></td>
+              <td class="num">$187,240</td>
+              <td class="num">2,980</td>
+              <td class="num">$62.83</td>
+              <td class="num roas-mid">4.20×</td>
+            </tr>
+            <tr>
+              <td class="name">B2B Whitepaper Series<small>3 papers, gated</small></td>
+              <td><span class="chan-tag">LinkedIn</span></td>
+              <td><span class="status-dot"><i></i>Active</span></td>
+              <td class="num">$156,880</td>
+              <td class="num">1,420</td>
+              <td class="num">$110.48</td>
+              <td class="num roas-mid">3.80×</td>
+            </tr>
+            <tr>
+              <td class="name">Pre-roll — Always-On<small>Category defence</small></td>
+              <td><span class="chan-tag">YouTube</span></td>
+              <td><span class="status-dot p"><i></i>Paused</span></td>
+              <td class="num">$124,060</td>
+              <td class="num">1,192</td>
+              <td class="num">$104.08</td>
+              <td class="num roas-bad">2.90×</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <div class="foot-m">
+        <span>Auto-refresh every 5 min · last sync 14:22 UTC</span>
+        <span>MediaPulse v1.0</span>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

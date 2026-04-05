@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1280"/>
+<title>MediaPulse — Warm Light</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #fbfaf6;
+    --bg-2: #f5f3ec;
+    --card: #ffffff;
+    --line: #e9e5d9;
+    --line-2: #dcd8c9;
+    --ink: #1a1a1f;
+    --ink-2: #51525c;
+    --ink-3: #8b8b93;
+    --ink-4: #b8b5a8;
+    --accent: #b85c3a;
+    --accent-2: #5a7a5c;
+    --up: #4a7a4c;
+    --down: #b85c3a;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink); }
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+  .tnum { font-variant-numeric: tabular-nums; font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+  .shell { max-width: 1280px; margin: 0 auto; padding: 0 28px 48px; }
+
+  /* TOP BAR */
+  .top {
+    display: flex; align-items: center; gap: 24px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
+  }
+  .brand .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 2px; }
+  .top nav { display: flex; gap: 4px; margin-left: 16px; }
+  .top nav a {
+    padding: 6px 12px; border-radius: 6px; color: var(--ink-2); text-decoration: none;
+    font-size: 13px; font-weight: 500;
+  }
+  .top nav a.active { background: var(--bg-2); color: var(--ink); }
+  .top nav a:hover:not(.active) { color: var(--ink); }
+  .top .spacer { flex: 1; }
+  .top .search {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg-2); padding: 7px 12px; border-radius: 6px;
+    font-size: 12px; color: var(--ink-3); min-width: 220px;
+    border: 1px solid var(--line);
+  }
+  .top .search kbd {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px;
+    padding: 1px 5px; background: var(--card); border: 1px solid var(--line); border-radius: 3px;
+  }
+  .top .avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 600;
+  }
+
+  /* TITLE ROW */
+  .titlebar {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 28px 0 20px;
+  }
+  .titlebar h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+  .titlebar .sub {
+    font-size: 13px;
+    color: var(--ink-3);
+    margin-top: 4px;
+  }
+  .filters { display: flex; gap: 8px; }
+  .chip {
+    padding: 6px 11px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    border-radius: 6px;
+    font-size: 12px; color: var(--ink-2);
+    font-weight: 500;
+    display: flex; align-items: center; gap: 6px;
+    cursor: pointer;
+  }
+  .chip.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .chip .caret { color: var(--ink-3); font-size: 10px; }
+
+  /* KPI CARDS */
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px 18px;
+  }
+  .card .label {
+    font-size: 11px;
+    color: var(--ink-3);
+    font-weight: 500;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 8px;
+  }
+  .card .label .info { color: var(--ink-4); font-size: 10px; }
+  .card .val {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .card .val .unit { font-size: 14px; color: var(--ink-3); font-weight: 500; margin-left: 2px; }
+  .card .delta {
+    margin-top: 6px;
+    font-size: 11px;
+    display: flex; align-items: center; gap: 5px;
+    color: var(--ink-2);
+  }
+  .delta .pill {
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 10px;
+  }
+  .delta.up .pill { background: #e8f0e8; color: var(--up); }
+  .delta.down .pill { background: #f5e7df; color: var(--down); }
+  .card .mini {
+    margin-top: 12px;
+    height: 28px;
+  }
+  .card .mini svg { width: 100%; height: 100%; display: block; }
+
+  /* CONTENT GRID */
+  .grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .card h3 {
+    margin: 0 0 14px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .card h3 .tabs { display: flex; gap: 2px; }
+  .card h3 .tabs button {
+    background: none; border: none; padding: 4px 9px;
+    font: inherit; font-size: 11px; font-weight: 500;
+    color: var(--ink-3); cursor: pointer; border-radius: 4px;
+  }
+  .card h3 .tabs button.on { background: var(--bg-2); color: var(--ink); }
+
+  /* BIG CHART */
+  .trend svg { width: 100%; height: 240px; display: block; }
+  .trend-legend {
+    display: flex; gap: 16px; padding-top: 10px; margin-top: 8px;
+    border-top: 1px solid var(--line);
+    font-size: 11px; color: var(--ink-2);
+  }
+  .trend-legend span { display: flex; align-items: center; gap: 6px; }
+  .trend-legend i { display: inline-block; width: 10px; height: 2px; }
+  .i-ink { background: var(--ink); }
+  .i-acc { background: var(--accent); }
+  .i-gr  { background: var(--accent-2); }
+
+  /* CHANNEL LIST */
+  .chan-row {
+    display: grid; grid-template-columns: 1fr auto; align-items: center;
+    padding: 9px 0;
+    gap: 10px;
+  }
+  .chan-row + .chan-row { border-top: 1px solid var(--line); }
+  .chan-row .name { font-size: 13px; font-weight: 500; }
+  .chan-row .tag { font-size: 10px; color: var(--ink-3); margin-left: 6px; font-weight: 400; }
+  .chan-row .pct { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; min-width: 40px; text-align: right; }
+  .chan-row .bar {
+    grid-column: 1/3; height: 3px; background: var(--bg-2); border-radius: 2px;
+    position: relative; margin-top: 4px;
+  }
+  .chan-row .bar i {
+    position: absolute; inset: 0 auto 0 0; background: var(--ink); border-radius: 2px;
+  }
+  .chan-row:first-child .bar i { background: var(--accent); }
+
+  /* CAMPAIGNS TABLE */
+  table.cams { width: 100%; border-collapse: collapse; }
+  table.cams thead th {
+    text-align: left;
+    font-size: 10px; font-weight: 600;
+    color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    background: var(--bg-2);
+  }
+  table.cams thead th.num { text-align: right; }
+  table.cams tbody td {
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  table.cams tbody tr:last-child td { border-bottom: none; }
+  table.cams tbody tr:hover td { background: var(--bg-2); }
+  table.cams .num { text-align: right; font-variant-numeric: tabular-nums; font-family: 'IBM Plex Mono', monospace; font-size: 12px; }
+  table.cams .name { font-weight: 500; }
+  table.cams .name .meta { display: block; font-size: 11px; color: var(--ink-3); font-weight: 400; margin-top: 1px; }
+  table.cams .tag {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 10px;
+    background: var(--bg-2);
+    color: var(--ink-2);
+    font-size: 11px;
+    font-weight: 500;
+  }
+  table.cams .status {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--ink-2);
+  }
+  table.cams .status .led {
+    width: 6px; height: 6px; border-radius: 50%; background: var(--up);
+  }
+  table.cams .status.paused .led { background: var(--ink-4); }
+  .card.table { padding: 0; overflow: hidden; }
+  .card.table h3 { padding: 14px 16px; border-bottom: 1px solid var(--line); margin: 0; background: var(--card); }
+
+  /* footer micro */
+  .microfoot {
+    display: flex; justify-content: space-between; padding: 14px 0;
+    font-size: 11px; color: var(--ink-3);
+    border-top: 1px solid var(--line); margin-top: 16px;
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <header class="top">
+      <div class="brand"><span class="dot"></span> MediaPulse</div>
+      <nav>
+        <a href="#" class="active">Overview</a>
+        <a href="#">Channels</a>
+        <a href="#">Campaigns</a>
+        <a href="#">Funnel</a>
+        <a href="#">Analyst</a>
+      </nav>
+      <div class="spacer"></div>
+      <div class="search">Search campaigns… <span style="flex:1"></span><kbd>⌘K</kbd></div>
+      <div class="avatar">AG</div>
+    </header>
+
+    <div class="titlebar">
+      <div>
+        <h1>Overview</h1>
+        <div class="sub">Paid media performance across 5 channels · updated 14:22 UTC</div>
+      </div>
+      <div class="filters">
+        <button class="chip active">Q1 2025 <span class="caret">▾</span></button>
+        <button class="chip">All channels <span class="caret">▾</span></button>
+        <button class="chip">Compare: Q4 2024 <span class="caret">▾</span></button>
+        <button class="chip">Export</button>
+      </div>
+    </div>
+
+    <section class="kpis">
+      <div class="card">
+        <div class="label">Total spend <span class="info">i</span></div>
+        <div class="val tnum">$2.85<span class="unit">M</span></div>
+        <div class="delta up"><span class="pill">+6.9%</span> vs Q4 2024</div>
+        <div class="mini"><svg viewBox="0 0 160 28" preserveAspectRatio="none">
+          <path d="M0,20 L14,18 L28,15 L42,17 L56,12 L70,8 L84,11 L98,14 L112,9 L126,5 L140,3 L160,5" fill="none" stroke="#1a1a1f" stroke-width="1.4"/>
+        </svg></div>
+      </div>
+      <div class="card">
+        <div class="label">Blended ROAS <span class="info">i</span></div>
+        <div class="val tnum">4.28<span class="unit">×</span></div>
+        <div class="delta up"><span class="pill">+0.31</span> vs Q4 2024</div>
+        <div class="mini"><svg viewBox="0 0 160 28" preserveAspectRatio="none">
+          <path d="M0,18 L14,16 L28,14 L42,18 L56,12 L70,8 L84,10 L98,13 L112,9 L126,5 L140,3 L160,6" fill="none" stroke="#b85c3a" stroke-width="1.4"/>
+        </svg></div>
+      </div>
+      <div class="card">
+        <div class="label">Cost per acq. <span class="info">i</span></div>
+        <div class="val tnum">$37.80</div>
+        <div class="delta up"><span class="pill">−$2.40</span> vs Q4 2024</div>
+        <div class="mini"><svg viewBox="0 0 160 28" preserveAspectRatio="none">
+          <path d="M0,5 L14,7 L28,9 L42,8 L56,11 L70,14 L84,13 L98,15 L112,17 L126,19 L140,21 L160,22" fill="none" stroke="#1a1a1f" stroke-width="1.4"/>
+        </svg></div>
+      </div>
+      <div class="card">
+        <div class="label">Conversions <span class="info">i</span></div>
+        <div class="val tnum">18,642</div>
+        <div class="delta up"><span class="pill">+12.4%</span> vs Q4 2024</div>
+        <div class="mini"><svg viewBox="0 0 160 28" preserveAspectRatio="none">
+          <path d="M0,22 L14,19 L28,16 L42,18 L56,13 L70,9 L84,11 L98,14 L112,10 L126,6 L140,4 L160,5" fill="none" stroke="#5a7a5c" stroke-width="1.4"/>
+        </svg></div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card trend">
+        <h3>
+          Spend &amp; ROAS, weekly
+          <div class="tabs">
+            <button>7d</button><button>30d</button><button class="on">13w</button><button>YTD</button>
+          </div>
+        </h3>
+        <svg viewBox="0 0 800 240" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="gfill" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#1a1a1f" stop-opacity="0.07"/>
+              <stop offset="1" stop-color="#1a1a1f" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g stroke="#e9e5d9" stroke-width="1">
+            <line x1="0" y1="40"  x2="800" y2="40"/>
+            <line x1="0" y1="100" x2="800" y2="100"/>
+            <line x1="0" y1="160" x2="800" y2="160"/>
+          </g>
+          <g font-family="IBM Plex Mono" font-size="9" fill="#8b8b93">
+            <text x="2" y="36">300k</text><text x="2" y="96">250k</text><text x="2" y="156">200k</text>
+          </g>
+          <!-- area -->
+          <path d="M40,170 L100,150 L160,130 L220,144 L280,110 L340,80 L400,100 L460,122 L520,88 L580,60 L640,46 L700,58 L760,70 L760,220 L40,220 Z" fill="url(#gfill)"/>
+          <path d="M40,170 L100,150 L160,130 L220,144 L280,110 L340,80 L400,100 L460,122 L520,88 L580,60 L640,46 L700,58 L760,70"
+                fill="none" stroke="#1a1a1f" stroke-width="1.8"/>
+          <!-- roas overlay -->
+          <path d="M40,160 L100,144 L160,130 L220,150 L280,118 L340,92 L400,104 L460,126 L520,100 L580,74 L640,56 L700,72 L760,84"
+                fill="none" stroke="#b85c3a" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <!-- end dots -->
+          <g>
+            <circle cx="760" cy="70" r="3" fill="#1a1a1f"/>
+            <circle cx="760" cy="84" r="3" fill="#b85c3a"/>
+          </g>
+          <!-- x labels -->
+          <g font-family="IBM Plex Sans" font-size="10" fill="#8b8b93">
+            <text x="40" y="234">Jan 6</text>
+            <text x="220" y="234">Jan 27</text>
+            <text x="400" y="234">Feb 17</text>
+            <text x="580" y="234">Mar 10</text>
+            <text x="760" y="234" text-anchor="end">Mar 31</text>
+          </g>
+        </svg>
+        <div class="trend-legend">
+          <span><i class="i-ink"></i> Spend</span>
+          <span><i class="i-acc"></i> Blended ROAS</span>
+        </div>
+      </div>
+
+      <aside class="card">
+        <h3>Channel mix <span style="font-size:11px;color:var(--ink-3);font-weight:500;">share of spend</span></h3>
+        <div class="chan-row">
+          <div><span class="name">Meta</span><span class="tag">Paid social</span></div>
+          <div class="pct">38%</div>
+          <div class="bar"><i style="width:100%"></i></div>
+        </div>
+        <div class="chan-row">
+          <div><span class="name">Google</span><span class="tag">Search · PMax</span></div>
+          <div class="pct">29%</div>
+          <div class="bar"><i style="width:76%"></i></div>
+        </div>
+        <div class="chan-row">
+          <div><span class="name">TikTok</span><span class="tag">Creator</span></div>
+          <div class="pct">17%</div>
+          <div class="bar"><i style="width:45%"></i></div>
+        </div>
+        <div class="chan-row">
+          <div><span class="name">LinkedIn</span><span class="tag">B2B demand</span></div>
+          <div class="pct">9%</div>
+          <div class="bar"><i style="width:24%"></i></div>
+        </div>
+        <div class="chan-row">
+          <div><span class="name">YouTube</span><span class="tag">Pre-roll</span></div>
+          <div class="pct">7%</div>
+          <div class="bar"><i style="width:18%"></i></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="card table">
+      <h3>Top campaigns <span style="font-size:11px;color:var(--ink-3);font-weight:500;">sorted by ROAS · 5 of 32</span></h3>
+      <table class="cams">
+        <thead>
+          <tr>
+            <th>Campaign</th>
+            <th>Channel</th>
+            <th>Status</th>
+            <th class="num">Spend</th>
+            <th class="num">Conv.</th>
+            <th class="num">CPA</th>
+            <th class="num">ROAS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="name">Brand Search — Exact<span class="meta">Evergreen · always-on</span></td>
+            <td><span class="tag">Google</span></td>
+            <td><span class="status"><span class="led"></span>Active</span></td>
+            <td class="num">$298,110</td>
+            <td class="num">5,840</td>
+            <td class="num">$51.04</td>
+            <td class="num" style="color:var(--up);font-weight:600;">6.30×</td>
+          </tr>
+          <tr>
+            <td class="name">Spring Collection Launch<span class="meta">Six-week push, Jan–Feb</span></td>
+            <td><span class="tag">Meta</span></td>
+            <td><span class="status"><span class="led"></span>Active</span></td>
+            <td class="num">$412,420</td>
+            <td class="num">7,210</td>
+            <td class="num">$57.20</td>
+            <td class="num" style="font-weight:600;">5.10×</td>
+          </tr>
+          <tr>
+            <td class="name">Creator Seeding — Q1<span class="meta">18 creators · 4 markets</span></td>
+            <td><span class="tag">TikTok</span></td>
+            <td><span class="status"><span class="led"></span>Active</span></td>
+            <td class="num">$187,240</td>
+            <td class="num">2,980</td>
+            <td class="num">$62.83</td>
+            <td class="num" style="font-weight:600;">4.20×</td>
+          </tr>
+          <tr>
+            <td class="name">B2B Whitepaper Series<span class="meta">3 papers, gated</span></td>
+            <td><span class="tag">LinkedIn</span></td>
+            <td><span class="status"><span class="led"></span>Active</span></td>
+            <td class="num">$156,880</td>
+            <td class="num">1,420</td>
+            <td class="num">$110.48</td>
+            <td class="num" style="font-weight:600;">3.80×</td>
+          </tr>
+          <tr>
+            <td class="name">Pre-roll — Always-On<span class="meta">Category defence</span></td>
+            <td><span class="tag">YouTube</span></td>
+            <td><span class="status paused"><span class="led"></span>Paused</span></td>
+            <td class="num">$124,060</td>
+            <td class="num">1,192</td>
+            <td class="num">$104.08</td>
+            <td class="num" style="color:var(--down);font-weight:600;">2.90×</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="microfoot">
+      <span>Last sync 14:22 UTC · auto-refresh 5m</span>
+      <span>MediaPulse · Q1 2025</span>
+    </div>
+  </div>
+</body>
+</html>

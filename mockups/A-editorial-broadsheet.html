@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1280" />
+<title>MediaPulse — Editorial Broadsheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --paper: #f4efe3;
+    --paper-2: #ebe4d2;
+    --ink: #141211;
+    --ink-2: #3a332e;
+    --ink-3: #7a6f66;
+    --rule: #1d1a17;
+    --accent: #b0211a;
+    --accent-2: #1f4b3f;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--paper); color: var(--ink); }
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    font-feature-settings: 'ss01', 'ss02';
+    /* paper grain */
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(20,18,17,0.03), transparent 50%),
+      radial-gradient(circle at 80% 60%, rgba(176,33,26,0.04), transparent 50%);
+  }
+  .page { max-width: 1240px; margin: 0 auto; padding: 48px 56px 96px; }
+  .masthead {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding-bottom: 18px;
+    border-bottom: 3px double var(--rule);
+  }
+  .masthead .left { display: flex; flex-direction: column; gap: 4px; }
+  .kicker {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 10px;
+    font-style: italic;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 72px;
+    line-height: 0.85;
+    letter-spacing: -0.035em;
+    font-variation-settings: "opsz" 144, "SOFT" 30;
+  }
+  .masthead .right {
+    text-align: right;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-2);
+    line-height: 1.4;
+  }
+  .masthead .right .vol {
+    font-family: 'Instrument Sans', sans-serif;
+    font-style: normal;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 3px;
+  }
+  .subhead {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 0;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    border-bottom: 1px solid var(--rule);
+  }
+  .subhead .dot { color: var(--accent); margin: 0 10px; }
+  .hero {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 48px;
+    padding: 32px 0 40px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-variation-settings: "opsz" 144, "SOFT" 50;
+    font-size: 56px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px;
+    color: var(--ink);
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); font-weight: 300; }
+  .hero .deck {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 18px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    max-width: 560px;
+    font-weight: 300;
+  }
+  .hero .byline {
+    margin-top: 20px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .hero-figure {
+    border-left: 1px solid var(--rule);
+    padding-left: 32px;
+  }
+  .hero-figure .figcap {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .hero-figure svg { width: 100%; height: auto; display: block; }
+  .hero-figure .cap {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 8px;
+    line-height: 1.35;
+  }
+
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    padding: 36px 0;
+    gap: 0;
+  }
+  .kpi { padding: 0 24px; border-right: 1px solid var(--rule); position: relative; }
+  .kpi:first-child { padding-left: 0; }
+  .kpi:last-child { border-right: none; padding-right: 0; }
+  .kpi .label {
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    margin-bottom: 10px;
+  }
+  .kpi .val {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-variation-settings: "opsz" 144;
+    font-size: 54px;
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+  .kpi .val .cents { font-size: 28px; vertical-align: super; color: var(--ink-2); }
+  .kpi .delta {
+    margin-top: 12px;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--accent-2);
+  }
+  .kpi.down .delta { color: var(--accent); }
+  .kpi .note {
+    font-size: 10px;
+    color: var(--ink-3);
+    margin-top: 4px;
+    font-style: italic;
+    font-family: 'Fraunces', serif;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 40px;
+    padding-top: 36px;
+    border-top: 3px double var(--rule);
+  }
+
+  .section-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-head h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    font-size: 26px;
+    margin: 0;
+    font-variation-settings: "opsz" 60;
+    letter-spacing: -0.015em;
+  }
+  .section-head .meta {
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .trend-wrap svg { width: 100%; height: 260px; display: block; }
+  .trend-legend {
+    display: flex; gap: 24px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    margin-top: 10px;
+  }
+  .trend-legend .sw { display: inline-block; width: 18px; height: 2px; vertical-align: middle; margin-right: 6px; }
+  .sw-ink { background: var(--ink); }
+  .sw-acc { background: var(--accent); }
+  .sw-gr  { background: var(--accent-2); }
+
+  .channels { }
+  .channel-row {
+    display: grid; grid-template-columns: 24px 1fr auto; gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(29,26,23,0.15);
+    align-items: baseline;
+  }
+  .channel-row .n {
+    font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: var(--ink-3);
+  }
+  .channel-row .name {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+  .channel-row .pct {
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    font-size: 22px;
+    font-variation-settings: "opsz" 144;
+    color: var(--ink);
+  }
+  .channel-row .bar {
+    grid-column: 2 / 4;
+    height: 3px;
+    background: var(--paper-2);
+    position: relative;
+    margin-top: 6px;
+  }
+  .channel-row .bar i { position: absolute; inset: 0 auto 0 0; background: var(--ink); }
+  .channel-row.top .bar i { background: var(--accent); }
+
+  .table-wrap { padding-top: 44px; border-top: 3px double var(--rule); margin-top: 48px; }
+  table.campaigns { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  table.campaigns thead th {
+    text-align: left;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+    padding: 10px 14px 10px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  table.campaigns thead th.num { text-align: right; }
+  table.campaigns tbody td {
+    padding: 18px 14px 18px 0;
+    border-bottom: 1px solid rgba(29,26,23,0.12);
+    vertical-align: baseline;
+  }
+  table.campaigns .num { text-align: right; font-variant-numeric: tabular-nums; }
+  table.campaigns .rank {
+    font-family: 'Fraunces', serif; font-style: italic; font-size: 13px; color: var(--ink-3);
+    width: 28px;
+  }
+  table.campaigns .name {
+    font-family: 'Fraunces', serif; font-size: 18px; letter-spacing: -0.005em;
+  }
+  table.campaigns .chan {
+    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3);
+  }
+  table.campaigns .roas {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: "opsz" 144;
+    font-size: 24px;
+    font-weight: 400;
+  }
+  table.campaigns .roas.top { color: var(--accent); }
+  table.campaigns .spend {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+  }
+
+  .pullquote {
+    margin: 56px auto;
+    max-width: 820px;
+    text-align: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 1.25;
+    color: var(--ink-2);
+    letter-spacing: -0.01em;
+  }
+  .pullquote:before { content: '“'; font-size: 72px; line-height: 0; vertical-align: -0.35em; color: var(--accent); margin-right: 4px;}
+  .pullquote:after { content: '”'; font-size: 72px; line-height: 0; vertical-align: -0.35em; color: var(--accent); margin-left: 4px;}
+
+  .colophon {
+    margin-top: 60px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    display: flex; justify-content: space-between;
+    font-family: 'Instrument Sans', sans-serif;
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <header class="masthead">
+      <div class="left">
+        <div class="kicker">A Quarterly Review of Marketing Performance</div>
+        <div class="logo">MediaPulse.</div>
+      </div>
+      <div class="right">
+        <div class="vol">Vol. IV · No. 1 · Q1 MMXXV</div>
+        <em>Sunday, April 5, 2026</em><br/>
+        <em>Portfolio Edition — Akshar Gupta</em>
+      </div>
+    </header>
+
+    <div class="subhead">
+      <span>Paid Media <span class="dot">·</span> Creator <span class="dot">·</span> Search <span class="dot">·</span> Social <span class="dot">·</span> Video</span>
+      <span>Five Channels <span class="dot">·</span> Thirty&#8209;Two Campaigns</span>
+      <span>Last refresh &nbsp;14:22 UTC</span>
+    </div>
+
+    <section class="hero">
+      <div>
+        <h1>A quiet, <em>disciplined</em><br/>quarter ends with the<br/>portfolio at a new high.</h1>
+        <p class="deck">Return on ad spend climbed three&#8209;tenths of a point to 4.28×, driven by stronger performance on Meta and a rebalance away from under&#8209;performing video inventory. CPA fell for the third consecutive quarter.</p>
+        <div class="byline">By the MediaPulse Desk · Analysis below</div>
+      </div>
+      <figure class="hero-figure">
+        <div class="figcap">Fig. 01 · Weekly spend, twelve&#8209;week trailing</div>
+        <svg viewBox="0 0 420 200" preserveAspectRatio="none">
+          <!-- frame -->
+          <line x1="0" y1="180" x2="420" y2="180" stroke="#1d1a17" stroke-width="0.75"/>
+          <line x1="0" y1="20" x2="420" y2="20" stroke="#1d1a17" stroke-width="0.3" stroke-dasharray="1 3"/>
+          <line x1="0" y1="100" x2="420" y2="100" stroke="#1d1a17" stroke-width="0.3" stroke-dasharray="1 3"/>
+          <!-- area -->
+          <path d="M0,150 L38,128 L76,106 L114,121 L152,86 L190,62 L228,90 L266,112 L304,70 L342,48 L380,32 L420,42 L420,180 L0,180 Z" fill="#b0211a" fill-opacity="0.08"/>
+          <!-- line -->
+          <path d="M0,150 L38,128 L76,106 L114,121 L152,86 L190,62 L228,90 L266,112 L304,70 L342,48 L380,32 L420,42" fill="none" stroke="#141211" stroke-width="1.5"/>
+          <!-- points -->
+          <g fill="#b0211a">
+            <circle cx="0" cy="150" r="2.5"/><circle cx="38" cy="128" r="2.5"/><circle cx="76" cy="106" r="2.5"/>
+            <circle cx="114" cy="121" r="2.5"/><circle cx="152" cy="86" r="2.5"/><circle cx="190" cy="62" r="2.5"/>
+            <circle cx="228" cy="90" r="2.5"/><circle cx="266" cy="112" r="2.5"/><circle cx="304" cy="70" r="2.5"/>
+            <circle cx="342" cy="48" r="2.5"/><circle cx="380" cy="32" r="2.5"/><circle cx="420" cy="42" r="2.5"/>
+          </g>
+          <!-- annotation -->
+          <line x1="380" y1="32" x2="380" y2="10" stroke="#b0211a" stroke-width="0.5"/>
+          <text x="378" y="8" font-family="Fraunces" font-style="italic" font-size="10" fill="#b0211a" text-anchor="end">peak — wk 11 · $258k</text>
+        </svg>
+        <p class="cap">Spend held steady through February before stepping up into a confident March close. Dotted reference lines mark the quarterly mean (top) and plan (bottom).</p>
+      </figure>
+    </section>
+
+    <section class="kpis">
+      <div class="kpi">
+        <div class="label">Total Spend</div>
+        <div class="val">$2,847<span class="cents">,320</span></div>
+        <div class="delta">↑ $184,100 vs. prior quarter</div>
+        <div class="note">tracking slightly ahead of plan</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Blended ROAS</div>
+        <div class="val">4.28<span class="cents">×</span></div>
+        <div class="delta">↑ 0.31 points q/q</div>
+        <div class="note">best on record since Q2 2024</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Cost per Acquisition</div>
+        <div class="val">$37<span class="cents">.80</span></div>
+        <div class="delta">↓ $2.40 q/q</div>
+        <div class="note">down for a third straight quarter</div>
+      </div>
+      <div class="kpi">
+        <div class="label">Conversions</div>
+        <div class="val">18,642</div>
+        <div class="delta">↑ 12.4% q/q</div>
+        <div class="note">paid&#8209;social carried the lift</div>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="trend-wrap">
+        <div class="section-head">
+          <h2>Quarter in Review</h2>
+          <div class="meta">Fig. 02 · Three series, thirteen weeks</div>
+        </div>
+        <svg viewBox="0 0 800 260" preserveAspectRatio="none">
+          <!-- axes -->
+          <line x1="0" y1="240" x2="800" y2="240" stroke="#141211" stroke-width="0.75"/>
+          <g stroke="#141211" stroke-width="0.3" stroke-dasharray="1 4">
+            <line x1="0" y1="60" x2="800" y2="60"/>
+            <line x1="0" y1="120" x2="800" y2="120"/>
+            <line x1="0" y1="180" x2="800" y2="180"/>
+          </g>
+          <!-- spend (ink, solid) -->
+          <path d="M0,200 L72,176 L145,150 L218,162 L290,128 L363,98 L436,126 L509,148 L581,108 L654,82 L727,68 L800,78" fill="none" stroke="#141211" stroke-width="2"/>
+          <!-- roas (crimson, slightly dashed) -->
+          <path d="M0,180 L72,160 L145,148 L218,166 L290,138 L363,110 L436,118 L509,140 L581,118 L654,94 L727,78 L800,92" fill="none" stroke="#b0211a" stroke-width="1.6" stroke-dasharray="5 3"/>
+          <!-- conv (forest, fine dash) -->
+          <path d="M0,220 L72,208 L145,192 L218,196 L290,170 L363,146 L436,158 L509,174 L581,152 L654,128 L727,112 L800,120" fill="none" stroke="#1f4b3f" stroke-width="1.4" stroke-dasharray="1 3"/>
+          <!-- x labels -->
+          <g font-family="Instrument Sans" font-size="9" fill="#7a6f66" letter-spacing="1">
+            <text x="0" y="256">JAN 6</text>
+            <text x="200" y="256">JAN 27</text>
+            <text x="400" y="256">FEB 17</text>
+            <text x="600" y="256">MAR 10</text>
+            <text x="800" y="256" text-anchor="end">MAR 31</text>
+          </g>
+        </svg>
+        <div class="trend-legend">
+          <span><span class="sw sw-ink"></span>Spend</span>
+          <span><span class="sw sw-acc"></span>ROAS</span>
+          <span><span class="sw sw-gr"></span>Conversions</span>
+        </div>
+      </div>
+
+      <aside class="channels">
+        <div class="section-head">
+          <h2>Channel Mix</h2>
+          <div class="meta">Share of total spend</div>
+        </div>
+        <div class="channel-row top">
+          <span class="n">i.</span>
+          <span class="name">Meta <em style="font-style:italic;color:#7a6f66;font-size:13px;">— paid social</em></span>
+          <span class="pct">38%</span>
+          <div class="bar"><i style="width:100%"></i></div>
+        </div>
+        <div class="channel-row">
+          <span class="n">ii.</span>
+          <span class="name">Google <em style="font-style:italic;color:#7a6f66;font-size:13px;">— search &amp; PMax</em></span>
+          <span class="pct">29%</span>
+          <div class="bar"><i style="width:76%"></i></div>
+        </div>
+        <div class="channel-row">
+          <span class="n">iii.</span>
+          <span class="name">TikTok <em style="font-style:italic;color:#7a6f66;font-size:13px;">— creator &amp; paid</em></span>
+          <span class="pct">17%</span>
+          <div class="bar"><i style="width:45%"></i></div>
+        </div>
+        <div class="channel-row">
+          <span class="n">iv.</span>
+          <span class="name">LinkedIn <em style="font-style:italic;color:#7a6f66;font-size:13px;">— B2B demand</em></span>
+          <span class="pct">9%</span>
+          <div class="bar"><i style="width:24%"></i></div>
+        </div>
+        <div class="channel-row">
+          <span class="n">v.</span>
+          <span class="name">YouTube <em style="font-style:italic;color:#7a6f66;font-size:13px;">— pre&#8209;roll</em></span>
+          <span class="pct">7%</span>
+          <div class="bar"><i style="width:18%"></i></div>
+        </div>
+      </aside>
+    </section>
+
+    <p class="pullquote">Brand search and a disciplined creator program did most of the heavy lifting; the rest is margin waiting to be found.</p>
+
+    <section class="table-wrap">
+      <div class="section-head">
+        <h2>The Five Best&#8209;Performing Campaigns</h2>
+        <div class="meta">Ranked by return on spend · Q1 2025</div>
+      </div>
+      <table class="campaigns">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Campaign</th>
+            <th>Channel</th>
+            <th class="num">Spend</th>
+            <th class="num">Conv.</th>
+            <th class="num">ROAS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="rank">i.</td><td class="name">Brand Search — Exact</td><td class="chan">Google</td><td class="num spend">$298,110</td><td class="num">5,840</td><td class="num roas top">6.30×</td></tr>
+          <tr><td class="rank">ii.</td><td class="name">Spring Collection Launch</td><td class="chan">Meta</td><td class="num spend">$412,420</td><td class="num">7,210</td><td class="num roas">5.10×</td></tr>
+          <tr><td class="rank">iii.</td><td class="name">Creator Seeding, Q1</td><td class="chan">TikTok</td><td class="num spend">$187,240</td><td class="num">2,980</td><td class="num roas">4.20×</td></tr>
+          <tr><td class="rank">iv.</td><td class="name">B2B Whitepaper Series</td><td class="chan">LinkedIn</td><td class="num spend">$156,880</td><td class="num">1,420</td><td class="num roas">3.80×</td></tr>
+          <tr><td class="rank">v.</td><td class="name">YouTube Pre&#8209;roll, Always&#8209;On</td><td class="chan">YouTube</td><td class="num spend">$124,060</td><td class="num">1,192</td><td class="num roas">2.90×</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <footer class="colophon">
+      <span>Set in Fraunces &amp; Instrument Sans</span>
+      <span>MediaPulse · An independent portfolio publication</span>
+      <span>Page One of Twelve</span>
+    </footer>
+  </main>
+</body>
+</html>

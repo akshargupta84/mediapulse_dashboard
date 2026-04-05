@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1280"/>
+<title>MediaPulse — Dark Luxe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0b;
+    --bg-2: #111113;
+    --bg-3: #17171a;
+    --line: #22222a;
+    --line-2: #2e2e38;
+    --tx: #f5f5f1;
+    --tx-2: #a8a89e;
+    --tx-3: #5c5c56;
+    --accent: #d4ff3f;
+    --accent-2: #8fff00;
+    --warm: #ff9b5a;
+    --rose: #ff4e70;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--tx); }
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    font-feature-settings: 'ss01';
+    /* subtle vignette + grain */
+    background:
+      radial-gradient(ellipse 1200px 700px at 50% -200px, rgba(212,255,63,0.04), transparent 60%),
+      radial-gradient(ellipse 800px 500px at 100% 100%, rgba(255,78,112,0.03), transparent 60%),
+      var(--bg);
+  }
+  body:before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 100;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.04 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.6; mix-blend-mode: overlay;
+  }
+
+  .shell { max-width: 1280px; margin: 0 auto; padding: 32px 48px 96px; position: relative; z-index: 1; }
+
+  /* TOP NAV */
+  nav.top {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .brand {
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  nav.top .brand .mark {
+    width: 10px; height: 10px; background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(212,255,63,0.6), 0 0 24px rgba(212,255,63,0.2);
+  }
+  nav.top .brand .name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+  nav.top .brand .name em { font-style: italic; color: var(--accent); }
+  nav.top .tabs { display: flex; gap: 28px; font-size: 12px; color: var(--tx-2); letter-spacing: 0.02em; }
+  nav.top .tabs a { color: var(--tx-2); text-decoration: none; padding: 6px 0; position: relative; }
+  nav.top .tabs a.active { color: var(--tx); }
+  nav.top .tabs a.active:after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -21px; height: 1px; background: var(--accent);
+    box-shadow: 0 0 8px rgba(212,255,63,0.5);
+  }
+  nav.top .meta { display: flex; align-items: center; gap: 16px; font-size: 11px; color: var(--tx-3); font-variant-numeric: tabular-nums; }
+  nav.top .period {
+    border: 1px solid var(--line-2); padding: 7px 14px;
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tx-2);
+    background: var(--bg-2);
+  }
+  nav.top .period b { color: var(--tx); font-weight: 500; }
+
+  /* HERO */
+  .hero {
+    display: grid; grid-template-columns: 1.15fr 1fr;
+    gap: 64px;
+    padding: 64px 0 56px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero .label {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--tx-3);
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 20px;
+  }
+  .hero .label:before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+  .hero h1 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 72px;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 0 0 20px;
+    color: var(--tx);
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); }
+  .hero .deck {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 20px;
+    line-height: 1.45;
+    color: var(--tx-2);
+    max-width: 520px;
+    font-weight: 400;
+  }
+
+  .hero-metric {
+    align-self: end;
+  }
+  .hero-metric .m-label {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tx-3);
+    margin-bottom: 12px;
+  }
+  .hero-metric .m-val {
+    font-family: 'Instrument Serif', serif;
+    font-size: 140px;
+    line-height: 0.9;
+    letter-spacing: -0.035em;
+    font-weight: 400;
+    color: var(--tx);
+  }
+  .hero-metric .m-val sup {
+    font-size: 48px;
+    vertical-align: super;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .hero-metric .m-foot {
+    display: flex; gap: 20px; margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid var(--line);
+  }
+  .hero-metric .m-foot div { flex: 1; }
+  .hero-metric .m-foot dt {
+    font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--tx-3); margin-bottom: 4px;
+  }
+  .hero-metric .m-foot dd {
+    margin: 0; font-family: 'Instrument Serif', serif; font-size: 24px; letter-spacing: -0.01em;
+  }
+  .hero-metric .m-foot dd em { color: var(--accent); font-style: italic; }
+
+  /* KPI ROW */
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    padding: 56px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .kpi {
+    padding: 0 32px;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .kpi:first-child { padding-left: 0; }
+  .kpi:last-child { border-right: none; padding-right: 0; }
+  .kpi .label {
+    font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--tx-3);
+    margin-bottom: 16px;
+  }
+  .kpi .val {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 56px;
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--tx);
+  }
+  .kpi .val sup { font-size: 20px; vertical-align: super; color: var(--tx-2); font-style: italic; }
+  .kpi .delta {
+    margin-top: 14px;
+    display: flex; align-items: baseline; gap: 8px;
+    font-size: 11px;
+    color: var(--accent);
+  }
+  .kpi .delta .arrow { font-size: 14px; }
+  .kpi.down .delta { color: var(--warm); }
+  .kpi .bar {
+    margin-top: 16px; height: 2px; background: var(--bg-3); position: relative;
+  }
+  .kpi .bar i { position: absolute; inset: 0 auto 0 0; background: var(--accent); box-shadow: 0 0 8px rgba(212,255,63,0.5); }
+  .kpi.down .bar i { background: var(--warm); box-shadow: 0 0 8px rgba(255,155,90,0.4); }
+
+  /* SECTION HEADING */
+  .sec-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin: 64px 0 28px;
+  }
+  .sec-head h2 {
+    font-family: 'Instrument Serif', serif;
+    font-weight: 400;
+    font-size: 40px;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .sec-head h2 em { font-style: italic; color: var(--accent); }
+  .sec-head .meta { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--tx-3); }
+
+  /* CHART */
+  .chart-wrap {
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--bg-2), var(--bg));
+    padding: 32px;
+    position: relative;
+  }
+  .chart-wrap:before {
+    content: ''; position: absolute; top: 0; left: 0; width: 80px; height: 1px; background: var(--accent);
+    box-shadow: 0 0 8px rgba(212,255,63,0.6);
+  }
+  .chart-wrap svg { width: 100%; height: 320px; display: block; }
+  .chart-legend { display: flex; gap: 32px; margin-top: 20px; font-size: 11px; color: var(--tx-2); letter-spacing: 0.04em; }
+  .chart-legend span { display: flex; align-items: center; gap: 10px; }
+  .chart-legend i { display: inline-block; width: 18px; height: 2px; }
+  .chart-legend .i1 { background: var(--accent); box-shadow: 0 0 6px rgba(212,255,63,0.6); }
+  .chart-legend .i2 { background: var(--tx); }
+  .chart-legend .i3 { background: var(--warm); }
+
+  /* MIX + CAMPAIGNS GRID */
+  .grid-bottom {
+    display: grid; grid-template-columns: 1fr 1.6fr;
+    gap: 32px;
+    margin-top: 64px;
+    padding-top: 64px;
+    border-top: 1px solid var(--line);
+  }
+  .mix .mix-item {
+    display: grid; grid-template-columns: 1fr auto; align-items: baseline;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .mix .mix-item:first-child { padding-top: 0; }
+  .mix .mix-item .name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 32px;
+    letter-spacing: -0.01em;
+  }
+  .mix .mix-item .name em { font-style: italic; color: var(--tx-3); font-size: 13px; margin-left: 8px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .mix .mix-item .pct {
+    font-family: 'Instrument Serif', serif;
+    font-size: 32px;
+    font-style: italic;
+    color: var(--accent);
+  }
+  .mix .mix-item.alt .pct { color: var(--tx); font-style: normal; }
+  .mix .mix-item .bar {
+    grid-column: 1/3; margin-top: 10px; height: 1px; background: var(--bg-3); position: relative;
+  }
+  .mix .mix-item .bar i { position: absolute; inset: 0 auto 0 0; background: var(--accent); box-shadow: 0 0 6px rgba(212,255,63,0.5); height: 1px; }
+  .mix .mix-item.alt .bar i { background: var(--tx-2); box-shadow: none; }
+
+  /* CAMPAIGN LIST */
+  .cams { display: flex; flex-direction: column; }
+  .cam {
+    display: grid; grid-template-columns: 32px 1fr auto auto auto;
+    gap: 24px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+  }
+  .cam .ix {
+    font-family: 'Instrument Serif', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--tx-3);
+  }
+  .cam .title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    letter-spacing: -0.005em;
+  }
+  .cam .chan {
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--tx-3);
+  }
+  .cam .spend {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 14px;
+    color: var(--tx-2);
+    font-variant-numeric: tabular-nums;
+  }
+  .cam .roas {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    font-style: italic;
+    color: var(--tx);
+    min-width: 80px;
+    text-align: right;
+  }
+  .cam:first-child .roas { color: var(--accent); }
+
+  footer.edge {
+    margin-top: 80px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between;
+    font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--tx-3);
+  }
+  footer.edge em { font-style: italic; color: var(--tx-2); text-transform: none; letter-spacing: 0; font-family: 'Instrument Serif', serif; font-size: 13px; }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="top">
+      <div class="brand">
+        <span class="mark"></span>
+        <span class="name">Media<em>pulse</em></span>
+      </div>
+      <div class="tabs">
+        <a href="#" class="active">Overview</a>
+        <a href="#">Channels</a>
+        <a href="#">Campaigns</a>
+        <a href="#">Funnel</a>
+        <a href="#">Analyst</a>
+      </div>
+      <div class="meta">
+        <span class="period">Period · <b>Q1 2025</b></span>
+        <span>14:22 UTC</span>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <div class="label">Q1 2025 · Quarter in review</div>
+        <h1>A disciplined<br/>quarter — and the<br/><em>highest ROAS</em> yet.</h1>
+        <p class="deck">Five channels, thirty-two campaigns, twelve weeks. Return climbed three tenths of a point while CPA fell for the third consecutive quarter.</p>
+      </div>
+      <div class="hero-metric">
+        <div class="m-label">Blended ROAS</div>
+        <div class="m-val">4.28<sup>×</sup></div>
+        <dl class="m-foot">
+          <div><dt>Δ vs Q4 2024</dt><dd><em>+0.31</em></dd></div>
+          <div><dt>Target</dt><dd>4.00×</dd></div>
+          <div><dt>Best week</dt><dd>W11 <em>— 4.67×</em></dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="kpis">
+      <div class="kpi">
+        <div class="label">Total Spend</div>
+        <div class="val">$2.85<sup>M</sup></div>
+        <div class="delta"><span class="arrow">↗</span> +$184k vs Q4</div>
+        <div class="bar"><i style="width:72%"></i></div>
+      </div>
+      <div class="kpi">
+        <div class="label">Impressions</div>
+        <div class="val">412<sup>M</sup></div>
+        <div class="delta"><span class="arrow">↗</span> +9.2% q/q</div>
+        <div class="bar"><i style="width:84%"></i></div>
+      </div>
+      <div class="kpi down">
+        <div class="label">Cost / Acquisition</div>
+        <div class="val">$37.80</div>
+        <div class="delta"><span class="arrow">↘</span> −$2.40 (−6.0%)</div>
+        <div class="bar"><i style="width:38%"></i></div>
+      </div>
+      <div class="kpi">
+        <div class="label">Conversions</div>
+        <div class="val">18,642</div>
+        <div class="delta"><span class="arrow">↗</span> +12.4% q/q</div>
+        <div class="bar"><i style="width:91%"></i></div>
+      </div>
+    </section>
+
+    <div class="sec-head">
+      <h2>Quarter <em>in motion.</em></h2>
+      <div class="meta">Fig. 01 · 13 weeks · weekly</div>
+    </div>
+
+    <section class="chart-wrap">
+      <svg viewBox="0 0 1200 320" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="glow" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#d4ff3f" stop-opacity="0.35"/>
+            <stop offset="1" stop-color="#d4ff3f" stop-opacity="0"/>
+          </linearGradient>
+          <filter id="g" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <!-- grid -->
+        <g stroke="#22222a" stroke-width="0.5">
+          <line x1="0" y1="40" x2="1200" y2="40"/>
+          <line x1="0" y1="120" x2="1200" y2="120"/>
+          <line x1="0" y1="200" x2="1200" y2="200"/>
+          <line x1="0" y1="280" x2="1200" y2="280"/>
+        </g>
+        <g font-family="Instrument Sans" font-size="9" fill="#5c5c56" letter-spacing="1.5">
+          <text x="0" y="36">5.0×</text><text x="0" y="116">4.5×</text><text x="0" y="196">4.0×</text><text x="0" y="276">3.5×</text>
+        </g>
+        <!-- area under ROAS -->
+        <path d="M40,230 L140,204 L240,186 L340,218 L440,164 L540,128 L640,146 L740,178 L840,134 L940,98 L1040,76 L1140,102 L1140,300 L40,300 Z" fill="url(#glow)"/>
+        <!-- ROAS line (accent) -->
+        <path d="M40,230 L140,204 L240,186 L340,218 L440,164 L540,128 L640,146 L740,178 L840,134 L940,98 L1040,76 L1140,102" fill="none" stroke="#d4ff3f" stroke-width="2" filter="url(#g)"/>
+        <!-- Spend index line (white, dashed) -->
+        <path d="M40,250 L140,236 L240,216 L340,226 L440,200 L540,178 L640,198 L740,218 L840,186 L940,160 L1040,144 L1140,156" fill="none" stroke="#f5f5f1" stroke-width="1.2" stroke-dasharray="3 4" opacity="0.7"/>
+        <!-- CPA line (warm, thin) -->
+        <path d="M40,108 L140,118 L240,130 L340,124 L440,142 L540,158 L640,150 L740,138 L840,156 L940,172 L1040,184 L1140,176" fill="none" stroke="#ff9b5a" stroke-width="1.2" opacity="0.55"/>
+        <!-- point highlights on ROAS -->
+        <g fill="#0a0a0b" stroke="#d4ff3f" stroke-width="1.5">
+          <circle cx="40" cy="230" r="3"/><circle cx="140" cy="204" r="3"/><circle cx="240" cy="186" r="3"/>
+          <circle cx="340" cy="218" r="3"/><circle cx="440" cy="164" r="3"/><circle cx="540" cy="128" r="3"/>
+          <circle cx="640" cy="146" r="3"/><circle cx="740" cy="178" r="3"/><circle cx="840" cy="134" r="3"/>
+          <circle cx="940" cy="98" r="3"/><circle cx="1040" cy="76" r="4.5" fill="#d4ff3f"/><circle cx="1140" cy="102" r="3"/>
+        </g>
+        <!-- peak annotation -->
+        <g>
+          <line x1="1040" y1="76" x2="1040" y2="20" stroke="#d4ff3f" stroke-width="0.6" stroke-dasharray="2 3"/>
+          <text x="1035" y="16" font-family="Instrument Serif" font-style="italic" font-size="14" fill="#d4ff3f" text-anchor="end">peak · 4.67×</text>
+        </g>
+        <!-- x axis -->
+        <g font-family="Instrument Sans" font-size="9" fill="#5c5c56" letter-spacing="1.5">
+          <text x="40" y="316">JAN 06</text><text x="240" y="316">JAN 27</text>
+          <text x="540" y="316">FEB 17</text><text x="840" y="316">MAR 10</text>
+          <text x="1140" y="316" text-anchor="end">MAR 31</text>
+        </g>
+      </svg>
+      <div class="chart-legend">
+        <span><i class="i1"></i>Blended ROAS</span>
+        <span><i class="i2"></i>Spend (indexed)</span>
+        <span><i class="i3"></i>CPA (indexed)</span>
+      </div>
+    </section>
+
+    <section class="grid-bottom">
+      <aside class="mix">
+        <div class="sec-head" style="margin-top:0;">
+          <h2>The <em>mix.</em></h2>
+        </div>
+        <div class="mix-item">
+          <span class="name">Meta <em>paid social</em></span>
+          <span class="pct">38%</span>
+          <div class="bar"><i style="width:100%"></i></div>
+        </div>
+        <div class="mix-item alt">
+          <span class="name">Google <em>search · pmax</em></span>
+          <span class="pct">29%</span>
+          <div class="bar"><i style="width:76%"></i></div>
+        </div>
+        <div class="mix-item alt">
+          <span class="name">TikTok <em>creator</em></span>
+          <span class="pct">17%</span>
+          <div class="bar"><i style="width:45%"></i></div>
+        </div>
+        <div class="mix-item alt">
+          <span class="name">LinkedIn <em>b2b demand</em></span>
+          <span class="pct">9%</span>
+          <div class="bar"><i style="width:24%"></i></div>
+        </div>
+        <div class="mix-item alt">
+          <span class="name">YouTube <em>pre-roll</em></span>
+          <span class="pct">7%</span>
+          <div class="bar"><i style="width:18%"></i></div>
+        </div>
+      </aside>
+
+      <section class="cams">
+        <div class="sec-head" style="margin-top:0;">
+          <h2>Top <em>campaigns.</em></h2>
+          <div class="meta">Ranked by ROAS</div>
+        </div>
+        <div class="cam">
+          <span class="ix">i.</span>
+          <div>
+            <div class="title">Brand Search — Exact</div>
+            <div class="chan">Google · Search</div>
+          </div>
+          <div class="spend">$298,110</div>
+          <div class="spend">5,840 conv</div>
+          <div class="roas">6.30×</div>
+        </div>
+        <div class="cam">
+          <span class="ix">ii.</span>
+          <div>
+            <div class="title">Spring Collection Launch</div>
+            <div class="chan">Meta · Paid Social</div>
+          </div>
+          <div class="spend">$412,420</div>
+          <div class="spend">7,210 conv</div>
+          <div class="roas">5.10×</div>
+        </div>
+        <div class="cam">
+          <span class="ix">iii.</span>
+          <div>
+            <div class="title">Creator Seeding — Q1</div>
+            <div class="chan">TikTok · Creator</div>
+          </div>
+          <div class="spend">$187,240</div>
+          <div class="spend">2,980 conv</div>
+          <div class="roas">4.20×</div>
+        </div>
+        <div class="cam">
+          <span class="ix">iv.</span>
+          <div>
+            <div class="title">B2B Whitepaper Series</div>
+            <div class="chan">LinkedIn · Demand</div>
+          </div>
+          <div class="spend">$156,880</div>
+          <div class="spend">1,420 conv</div>
+          <div class="roas">3.80×</div>
+        </div>
+        <div class="cam">
+          <span class="ix">v.</span>
+          <div>
+            <div class="title">Pre-roll — Always-On</div>
+            <div class="chan">YouTube · Video</div>
+          </div>
+          <div class="spend">$124,060</div>
+          <div class="spend">1,192 conv</div>
+          <div class="roas">2.90×</div>
+        </div>
+      </section>
+    </section>
+
+    <footer class="edge">
+      <span>MediaPulse · <em>A portfolio of attention</em></span>
+      <span>Set in Instrument Serif &amp; Instrument Sans</span>
+      <span>v1.0 · 04.05.26</span>
+    </footer>
+  </div>
+</body>
+</html>

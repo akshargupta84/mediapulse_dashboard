@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=1280"/>
+<title>MediaPulse — The Analog Almanac</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --paper: #ede4d1;
+    --paper-2: #e4d9c0;
+    --paper-3: #d9ccad;
+    --ink: #1a1612;
+    --ink-2: #3e342a;
+    --ink-3: #877557;
+    --rule: #1a1612;
+    --tomato: #c8472b;
+    --teal: #1d5b63;
+    --gold: #b68a35;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--paper); color: var(--ink); }
+  body {
+    font-family: 'Libre Caslon Text', serif;
+    font-size: 13px;
+    line-height: 1.55;
+    /* paper noise via SVG */
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' seed='5'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.08  0 0 0 0 0.05  0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>"),
+      radial-gradient(ellipse 1400px 800px at 50% 30%, #f2eadb, #ede4d1 60%, #d9ccad 100%);
+  }
+
+  .book { max-width: 1240px; margin: 0 auto; padding: 40px 56px 96px; position: relative; }
+  .book:before {
+    /* decorative frame */
+    content: ''; position: absolute; inset: 20px 28px;
+    border: 1px solid var(--rule);
+    pointer-events: none;
+  }
+  .book:after {
+    content: ''; position: absolute; inset: 24px 32px;
+    border: 1px dashed var(--rule);
+    pointer-events: none;
+  }
+
+  .masthead {
+    text-align: center;
+    padding: 32px 0 20px;
+    border-bottom: 3px double var(--rule);
+    position: relative;
+    margin: 0 24px;
+  }
+  .masthead .top-line {
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding: 0 16px 20px;
+  }
+  .masthead .top-line .orn { color: var(--tomato); }
+  .masthead h1.name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 108px;
+    line-height: 0.82;
+    letter-spacing: -0.02em;
+    font-weight: 400;
+    margin: 0 0 8px;
+    color: var(--ink);
+  }
+  .masthead h1.name span.amp {
+    font-style: italic;
+    color: var(--tomato);
+    font-size: 86px;
+    vertical-align: 0.05em;
+    margin: 0 -6px;
+  }
+  .masthead .tagline {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-2);
+    margin-bottom: 14px;
+  }
+  .masthead .rule-stars {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    color: var(--tomato);
+    margin-bottom: 8px;
+  }
+  .masthead .rule-stars:before, .masthead .rule-stars:after {
+    content: ''; flex: 1; max-width: 160px; height: 1px; background: var(--ink);
+  }
+  .masthead .issue-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+  }
+  .masthead .issue-line em { color: var(--tomato); font-style: normal; }
+
+  /* stamp */
+  .stamp {
+    position: absolute; top: 36px; right: 36px;
+    border: 2px solid var(--teal); color: var(--teal);
+    padding: 10px 16px; text-align: center;
+    font-family: 'JetBrains Mono', monospace; font-size: 9px;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    transform: rotate(6deg);
+    background: rgba(237,228,209,0.7);
+  }
+  .stamp b { display: block; font-size: 13px; font-family: 'DM Serif Display', serif; letter-spacing: 0.05em; font-weight: 400; }
+
+  /* meta bar */
+  .meta-bar {
+    display: grid; grid-template-columns: repeat(6, 1fr);
+    padding: 12px 32px;
+    margin: 0 24px;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .meta-bar > div { display: flex; flex-direction: column; gap: 2px; }
+  .meta-bar dt { color: var(--ink-3); font-size: 8px; }
+  .meta-bar dd { margin: 0; font-family: 'DM Serif Display', serif; font-size: 16px; letter-spacing: 0; text-transform: none; color: var(--ink); }
+  .meta-bar .hi dd { color: var(--tomato); }
+
+  /* section chapter */
+  .chapter {
+    text-align: center;
+    margin: 40px 0 20px;
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    color: var(--ink-2);
+  }
+  .chapter .num {
+    display: inline-block;
+    padding: 0 20px;
+    font-family: 'DM Serif Display', serif;
+    font-style: normal;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    color: var(--tomato);
+    text-transform: uppercase;
+  }
+  .chapter .title {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 32px;
+    color: var(--ink);
+    display: block;
+    margin-top: 4px;
+  }
+  .chapter:before, .chapter:after {
+    content: '⁂'; color: var(--tomato); margin: 0 12px;
+  }
+
+  /* KPI frames */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin: 0 32px;
+    border: 2px solid var(--rule);
+    background: rgba(228,217,192,0.4);
+  }
+  .kpi {
+    padding: 22px 22px 26px;
+    border-right: 1px solid var(--rule);
+    position: relative;
+    text-align: center;
+  }
+  .kpi:last-child { border-right: none; }
+  .kpi .icon {
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--tomato);
+    margin-bottom: 4px;
+  }
+  .kpi .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .kpi .val {
+    font-family: 'DM Serif Display', serif;
+    font-size: 56px;
+    line-height: 0.9;
+    letter-spacing: -0.015em;
+    font-weight: 400;
+    color: var(--ink);
+  }
+  .kpi .val sup { font-size: 20px; color: var(--tomato); font-style: italic; }
+  .kpi .val .cents { font-size: 24px; color: var(--ink-3); }
+  .kpi .delta {
+    margin-top: 10px;
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--teal);
+  }
+  .kpi.down .delta { color: var(--tomato); }
+  .kpi .flourish {
+    margin: 8px auto 0; width: 50px; height: 1px;
+    background: var(--ink);
+    position: relative;
+  }
+  .kpi .flourish:before, .kpi .flourish:after {
+    content: ''; position: absolute; top: -1.5px; width: 3px; height: 3px; background: var(--tomato); border-radius: 50%;
+  }
+  .kpi .flourish:before { left: -4px; }
+  .kpi .flourish:after { right: -4px; }
+
+  /* Two column body */
+  .spread {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    gap: 36px;
+    margin: 0 32px;
+    padding-top: 24px;
+  }
+  .col h3 {
+    font-family: 'DM Serif Display', serif;
+    font-weight: 400;
+    font-size: 26px;
+    margin: 0 0 10px;
+    letter-spacing: -0.005em;
+  }
+  .col h3 em { font-style: italic; color: var(--tomato); }
+  .col .byline {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--ink-3);
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 16px;
+  }
+  .prose p {
+    margin: 0 0 14px;
+    font-size: 14px;
+    line-height: 1.65;
+    text-align: justify;
+    hyphens: auto;
+  }
+  .prose p:first-of-type:first-letter {
+    font-family: 'DM Serif Display', serif;
+    font-size: 68px;
+    float: left;
+    line-height: 0.88;
+    padding: 6px 8px 0 0;
+    color: var(--tomato);
+  }
+  .prose p em { color: var(--teal); font-style: italic; }
+
+  .fig {
+    background: rgba(228,217,192,0.5);
+    border: 1px solid var(--rule);
+    padding: 20px;
+    margin-top: 12px;
+  }
+  .fig .figlabel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+    display: flex; justify-content: space-between;
+  }
+  .fig svg { width: 100%; display: block; height: 260px; }
+  .fig .caption {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 10px;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  /* Channel panel as table */
+  .channel-panel {
+    border: 2px solid var(--rule);
+    background: rgba(228,217,192,0.4);
+    padding: 0;
+  }
+  .channel-panel h3 {
+    margin: 0; padding: 14px 18px;
+    border-bottom: 1px solid var(--rule);
+    text-align: center;
+    font-size: 22px;
+  }
+  .channel-panel h3 em { color: var(--tomato); font-style: italic; }
+  .channel-panel .tag {
+    display: block; font-family: 'JetBrains Mono', monospace;
+    font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3);
+    margin-top: 2px;
+  }
+  table.chan { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  table.chan td {
+    padding: 14px 18px;
+    border-bottom: 1px dashed rgba(26,22,18,0.3);
+  }
+  table.chan tr:last-child td { border-bottom: none; }
+  table.chan .name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    letter-spacing: -0.005em;
+  }
+  table.chan .name em {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-left: 6px;
+  }
+  table.chan .pct {
+    text-align: right;
+    font-family: 'DM Serif Display', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--tomato);
+  }
+  table.chan tr.alt .pct { color: var(--teal); font-style: normal; }
+  .bar-row td { padding-top: 0 !important; padding-bottom: 14px !important; border-bottom: none !important; }
+  .bar-row .track {
+    height: 4px; background: var(--paper-3); position: relative;
+  }
+  .bar-row .track i { position: absolute; inset: 0 auto 0 0; background: var(--tomato); }
+  .bar-row.alt .track i { background: var(--teal); }
+
+  /* Campaign broadsheet */
+  .roster {
+    margin: 40px 32px 0;
+    border-top: 3px double var(--rule);
+    border-bottom: 3px double var(--rule);
+    padding: 24px 0;
+  }
+  .roster h3.head {
+    font-family: 'DM Serif Display', serif;
+    font-size: 38px;
+    text-align: center;
+    margin: 0 0 6px;
+    font-weight: 400;
+  }
+  .roster h3.head em { font-style: italic; color: var(--tomato); }
+  .roster .sub {
+    text-align: center;
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    color: var(--ink-3);
+    margin-bottom: 22px;
+  }
+  table.roster-table { width: 100%; border-collapse: collapse; }
+  table.roster-table thead th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-3);
+    padding: 10px 14px; text-align: left;
+    border-bottom: 1px solid var(--rule);
+    font-weight: 500;
+  }
+  table.roster-table thead th.num { text-align: right; }
+  table.roster-table tbody td {
+    padding: 18px 14px;
+    border-bottom: 1px solid rgba(26,22,18,0.18);
+    vertical-align: baseline;
+    font-variant-numeric: tabular-nums;
+  }
+  table.roster-table .rnk {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--tomato);
+    font-style: italic;
+    width: 48px;
+    text-align: center;
+  }
+  table.roster-table .cname {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    letter-spacing: -0.005em;
+  }
+  table.roster-table .cname em {
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    display: block;
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 2px;
+  }
+  table.roster-table td.num { text-align: right; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
+  table.roster-table .roas {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--teal);
+  }
+  table.roster-table tr:first-child .roas { color: var(--tomato); }
+
+  /* Footer colophon */
+  .colophon {
+    margin: 40px 32px 0;
+    text-align: center;
+    font-family: 'Libre Caslon Text', serif;
+    font-style: italic;
+    color: var(--ink-3);
+    font-size: 11px;
+  }
+  .colophon .orn {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--tomato);
+    display: block;
+    margin-bottom: 6px;
+  }
+</style>
+</head>
+<body>
+  <div class="book">
+    <header class="masthead">
+      <div class="top-line">
+        <span>Est. MMXXIV <span class="orn">⁂</span> Portfolio Edition</span>
+        <span>Published Sundays <span class="orn">⁂</span> Akshar Gupta, Ed.</span>
+      </div>
+      <h1 class="name">Media<span class="amp">&amp;</span>Pulse</h1>
+      <div class="tagline">A quarterly almanac of paid media, plainly accounted for.</div>
+      <div class="rule-stars">✦ ✦ ✦</div>
+      <div class="issue-line">Vol. IV · No. I <em>&middot;</em> Q1 2025 Dispatch <em>&middot;</em> 5 April 2026</div>
+
+      <div class="stamp">Quarterly<b>DISPATCH</b>Q1 · MMXXV</div>
+    </header>
+
+    <dl class="meta-bar">
+      <div><dt>Period</dt><dd>Q1 2025</dd></div>
+      <div><dt>Span</dt><dd>Jan 6 – Mar 31</dd></div>
+      <div><dt>Weeks</dt><dd>Thirteen</dd></div>
+      <div><dt>Channels</dt><dd>Five</dd></div>
+      <div><dt>Campaigns</dt><dd>Thirty-two</dd></div>
+      <div class="hi"><dt>Verdict</dt><dd>Stronger</dd></div>
+    </dl>
+
+    <div class="chapter">
+      <span class="num">CHAPTER I</span>
+      <span class="title">The Four Accounts</span>
+    </div>
+
+    <section class="kpis">
+      <div class="kpi">
+        <div class="icon">§</div>
+        <div class="label">Total Spend</div>
+        <div class="val">$2,847<span class="cents">k</span></div>
+        <div class="delta">↑ up $184,100 on the quarter</div>
+        <div class="flourish"></div>
+      </div>
+      <div class="kpi">
+        <div class="icon">⁂</div>
+        <div class="label">Blended ROAS</div>
+        <div class="val">4.28<sup>×</sup></div>
+        <div class="delta">↑ ahead by thirty-one basis</div>
+        <div class="flourish"></div>
+      </div>
+      <div class="kpi down">
+        <div class="icon">¶</div>
+        <div class="label">Cost per Acq.</div>
+        <div class="val">$37<span class="cents">.80</span></div>
+        <div class="delta">↓ down $2.40, third quarter</div>
+        <div class="flourish"></div>
+      </div>
+      <div class="kpi">
+        <div class="icon">†</div>
+        <div class="label">Conversions</div>
+        <div class="val">18,642</div>
+        <div class="delta">↑ up 12.4% on the quarter</div>
+        <div class="flourish"></div>
+      </div>
+    </section>
+
+    <div class="chapter">
+      <span class="num">CHAPTER II</span>
+      <span class="title">A Dispatch from the Desk</span>
+    </div>
+
+    <section class="spread">
+      <div class="col">
+        <h3>A quiet quarter ends <em>on the books.</em></h3>
+        <div class="byline">From the Desk of the Editor · 5 April 2026</div>
+        <div class="prose">
+          <p>Five channels went to work in January and, by the end of March, the ledger closed higher than any quarter on record. Return on spend rose three tenths of a point to 4.28×, and the cost of bringing in a customer fell for a <em>third consecutive quarter</em>.</p>
+          <p>The work was neither loud nor particularly clever. Brand search on Google continued to pay for itself many times over. The creator programme on TikTok held its line. A disciplined rebalance away from under-performing pre-roll freed up spend that found a better home on Meta, where the spring launch carried the paid-social book on its back.</p>
+          <p>The almanac, as ever, keeps its own counsel. Below, the week-by-week movement of spend and return, and the five campaigns that most rewarded their keep.</p>
+        </div>
+        <figure class="fig">
+          <div class="figlabel"><span>Fig. 01 &middot; Weekly Spend &amp; Return</span><span>Thirteen weeks</span></div>
+          <svg viewBox="0 0 720 260" preserveAspectRatio="none">
+            <defs>
+              <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(-35)">
+                <line x1="0" y1="0" x2="0" y2="6" stroke="#c8472b" stroke-width="1" stroke-opacity="0.35"/>
+              </pattern>
+            </defs>
+            <!-- frame -->
+            <rect x="0" y="0" width="720" height="240" fill="none" stroke="#1a1612" stroke-width="1"/>
+            <!-- grid -->
+            <g stroke="#1a1612" stroke-width="0.3" stroke-dasharray="1 4">
+              <line x1="0" y1="60" x2="720" y2="60"/>
+              <line x1="0" y1="120" x2="720" y2="120"/>
+              <line x1="0" y1="180" x2="720" y2="180"/>
+            </g>
+            <!-- y labels -->
+            <g font-family="JetBrains Mono" font-size="8" fill="#877557">
+              <text x="4" y="14">300k</text>
+              <text x="4" y="66">250k</text>
+              <text x="4" y="126">200k</text>
+              <text x="4" y="186">150k</text>
+            </g>
+            <!-- area (hatched) under spend line -->
+            <path d="M30,200 L85,178 L140,156 L195,170 L250,134 L305,104 L360,128 L415,148 L470,110 L525,84 L580,70 L635,82 L690,90 L690,240 L30,240 Z" fill="url(#hatch)" opacity="0.9"/>
+            <!-- spend line -->
+            <path d="M30,200 L85,178 L140,156 L195,170 L250,134 L305,104 L360,128 L415,148 L470,110 L525,84 L580,70 L635,82 L690,90" fill="none" stroke="#1a1612" stroke-width="1.8"/>
+            <!-- roas line (teal, dashed) -->
+            <path d="M30,192 L85,174 L140,162 L195,178 L250,150 L305,122 L360,130 L415,150 L470,126 L525,96 L580,80 L635,94 L690,106" fill="none" stroke="#1d5b63" stroke-width="1.4" stroke-dasharray="4 3"/>
+            <!-- dots -->
+            <g fill="#c8472b">
+              <circle cx="30" cy="200" r="2.5"/><circle cx="85" cy="178" r="2.5"/><circle cx="140" cy="156" r="2.5"/>
+              <circle cx="195" cy="170" r="2.5"/><circle cx="250" cy="134" r="2.5"/><circle cx="305" cy="104" r="2.5"/>
+              <circle cx="360" cy="128" r="2.5"/><circle cx="415" cy="148" r="2.5"/><circle cx="470" cy="110" r="2.5"/>
+              <circle cx="525" cy="84" r="2.5"/><circle cx="580" cy="70" r="3.2"/><circle cx="635" cy="82" r="2.5"/><circle cx="690" cy="90" r="2.5"/>
+            </g>
+            <!-- peak annotation -->
+            <g>
+              <line x1="580" y1="70" x2="580" y2="36" stroke="#c8472b" stroke-width="0.6"/>
+              <text x="580" y="30" font-family="DM Serif Display" font-style="italic" font-size="13" fill="#c8472b" text-anchor="middle">peak · week XI</text>
+            </g>
+            <!-- x-axis ticks -->
+            <g font-family="JetBrains Mono" font-size="8" fill="#877557">
+              <text x="30" y="254">W.I</text><text x="195" y="254">W.IV</text><text x="360" y="254">W.VII</text>
+              <text x="525" y="254">W.X</text><text x="690" y="254" text-anchor="end">W.XIII</text>
+            </g>
+          </svg>
+          <div class="caption">Spend (solid) accompanies Blended ROAS (dashed, teal) over thirteen consecutive weeks. The hatched ground below marks the quarterly floor.</div>
+        </figure>
+      </div>
+
+      <aside class="col">
+        <div class="channel-panel">
+          <h3>The <em>Five Channels</em><span class="tag">by share of spend</span></h3>
+          <table class="chan">
+            <tr>
+              <td class="name">Meta <em>paid social</em></td>
+              <td class="pct">38%</td>
+            </tr>
+            <tr class="bar-row"><td colspan="2"><div class="track"><i style="width:100%"></i></div></td></tr>
+            <tr class="alt">
+              <td class="name">Google <em>search &amp; pmax</em></td>
+              <td class="pct">29%</td>
+            </tr>
+            <tr class="bar-row alt"><td colspan="2"><div class="track"><i style="width:76%"></i></div></td></tr>
+            <tr>
+              <td class="name">TikTok <em>creator</em></td>
+              <td class="pct">17%</td>
+            </tr>
+            <tr class="bar-row"><td colspan="2"><div class="track"><i style="width:45%"></i></div></td></tr>
+            <tr class="alt">
+              <td class="name">LinkedIn <em>b2b demand</em></td>
+              <td class="pct">9%</td>
+            </tr>
+            <tr class="bar-row alt"><td colspan="2"><div class="track"><i style="width:24%"></i></div></td></tr>
+            <tr>
+              <td class="name">YouTube <em>pre-roll</em></td>
+              <td class="pct">7%</td>
+            </tr>
+            <tr class="bar-row"><td colspan="2"><div class="track"><i style="width:18%"></i></div></td></tr>
+          </table>
+        </div>
+      </aside>
+    </section>
+
+    <section class="roster">
+      <h3 class="head">The <em>Five Best-Performing</em> Campaigns</h3>
+      <div class="sub">ranked by return on ad spend · Q1 MMXXV</div>
+      <table class="roster-table">
+        <thead>
+          <tr>
+            <th style="width:48px;"></th>
+            <th>Campaign</th>
+            <th>Channel</th>
+            <th class="num">Spend</th>
+            <th class="num">Conv.</th>
+            <th class="num">CPA</th>
+            <th class="num">Return</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rnk">I.</td>
+            <td class="cname">Brand Search — Exact<em>evergreen, always-on</em></td>
+            <td>Google</td>
+            <td class="num">$298,110</td>
+            <td class="num">5,840</td>
+            <td class="num">$51.04</td>
+            <td class="num"><span class="roas">6.30×</span></td>
+          </tr>
+          <tr>
+            <td class="rnk">II.</td>
+            <td class="cname">Spring Collection Launch<em>a six-week headliner</em></td>
+            <td>Meta</td>
+            <td class="num">$412,420</td>
+            <td class="num">7,210</td>
+            <td class="num">$57.20</td>
+            <td class="num"><span class="roas">5.10×</span></td>
+          </tr>
+          <tr>
+            <td class="rnk">III.</td>
+            <td class="cname">Creator Seeding, Q1 Wave<em>eighteen creators, four markets</em></td>
+            <td>TikTok</td>
+            <td class="num">$187,240</td>
+            <td class="num">2,980</td>
+            <td class="num">$62.83</td>
+            <td class="num"><span class="roas">4.20×</span></td>
+          </tr>
+          <tr>
+            <td class="rnk">IV.</td>
+            <td class="cname">B2B Whitepaper Series<em>three papers, gated</em></td>
+            <td>LinkedIn</td>
+            <td class="num">$156,880</td>
+            <td class="num">1,420</td>
+            <td class="num">$110.48</td>
+            <td class="num"><span class="roas">3.80×</span></td>
+          </tr>
+          <tr>
+            <td class="rnk">V.</td>
+            <td class="cname">Pre-roll, Always-On<em>category-defence buy</em></td>
+            <td>YouTube</td>
+            <td class="num">$124,060</td>
+            <td class="num">1,192</td>
+            <td class="num">$104.08</td>
+            <td class="num"><span class="roas">2.90×</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="colophon">
+      <span class="orn">⁂</span>
+      Set in DM Serif Display &amp; Libre Caslon Text, with JetBrains Mono for the ledger. Printed, figuratively, on the fifth of April in the year twenty twenty-six.
+      <br/>MediaPulse Almanac · Page One of Twelve
+    </div>
+  </div>
+</body>
+</html>

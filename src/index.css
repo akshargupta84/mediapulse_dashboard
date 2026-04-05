@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ *
+ * MediaPulse — Warm Light
+ * Cream paper, IBM Plex Sans + Plex Mono for tabular figures,
+ * a single restrained terracotta accent. Typography does the work.
+ * ------------------------------------------------------------------ */
+
+html,
+body {
+  background: #fbfaf6;
+  color: #1a1a1f;
+  font-family: 'IBM Plex Sans', ui-sans-serif, system-ui, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+/* Tabular numerals — used on every numeric value so they align. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+/* Scrollbar — quiet, warm. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #fbfaf6;
+}
+::-webkit-scrollbar-thumb {
+  background: #dcd8c9;
+  border: 2px solid #fbfaf6;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b8b5a8;
+}
+
+/* Text selection. */
+::selection {
+  background: #b85c3a;
+  color: #ffffff;
+}
+
+/* Recharts — warm, quiet axes and grid. */
+.recharts-cartesian-axis-tick text {
+  fill: #8b8b93 !important;
+  font-family: 'IBM Plex Sans', sans-serif !important;
+  font-size: 10px !important;
+}
+.recharts-cartesian-grid line {
+  stroke: #e9e5d9 !important;
+}
+
+/* Custom tooltip shared style (applied via inline contentStyle too). */
+.recharts-default-tooltip {
+  background: #ffffff !important;
+  border: 1px solid #e9e5d9 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 8px rgba(26, 26, 31, 0.06) !important;
+  padding: 8px 10px !important;
+}
