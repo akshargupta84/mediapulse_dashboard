@@ -372,6 +372,7 @@ export function buildAnalystContext(currentPeriod: PeriodData): string {
     `• When the user says "this period" or references on-screen numbers, assume they mean ${currentPeriod.label} unless they say otherwise.`,
     `• For trend, growth, YoY, or cross-quarter questions, freely pull from all three quarters.`,
     `• Keep responses tight — aim for 120–250 words for most questions, more only when the question genuinely requires it.`,
+    `• IMPORTANT: Do NOT use any markdown formatting — no **bold**, no _italic_, no ### headers, no [links](). The output is rendered as plain text, so markdown syntax will appear as ugly raw characters. Use plain text only. Use CAPS or dashes for emphasis if needed.`,
     ``,
     `FULL DATASET — ${PERIODS.length} quarters, ordered oldest → newest:`,
     ``,
