@@ -24,10 +24,9 @@ RUN npm ci
 # VITE_ANALYST_URL is baked into the bundle at build time so the app
 # calls the same-origin /api/analyst endpoint on the Space.
 COPY index.html ./
-COPY vite.config.ts tsconfig.json tsconfig.node.json tsconfig.app.json* ./
+COPY vite.config.ts tsconfig.json tsconfig.node.json ./
 COPY tailwind.config.js postcss.config.js ./
 COPY src ./src
-COPY public ./public
 
 ENV VITE_ANALYST_URL=/api/analyst
 RUN npm run build
