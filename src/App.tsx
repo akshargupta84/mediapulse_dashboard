@@ -55,11 +55,11 @@ function Dashboard() {
       <header className="border-b border-line bg-bg sticky top-0 z-40">
         <div className="max-w-[1280px] mx-auto px-7 py-4 flex items-center gap-6">
           <div className="flex items-center gap-2.5">
-            <span className="w-2 h-2 bg-accent rounded-sm" />
-            <span className="text-[15px] font-semibold text-ink tracking-[-0.01em]">
+            <span className="w-2.5 h-2.5 bg-accent rounded-sm" />
+            <span className="text-[17px] font-semibold text-ink tracking-[-0.01em]">
               MediaPulse
             </span>
-            <span className="hidden lg:inline text-[13.5px] text-ink2 font-medium border-l border-line pl-2.5 ml-0.5">
+            <span className="hidden lg:inline text-[15px] text-ink2 font-medium border-l border-line pl-3 ml-1">
               Paid-media analytics with an embedded Claude analyst · demo dataset
             </span>
           </div>
@@ -68,7 +68,7 @@ function Dashboard() {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`px-3 py-1.5 rounded-md text-[13px] font-medium transition-colors ${
+                className={`px-3.5 py-1.5 rounded-md text-[15px] font-medium transition-colors ${
                   tab === t.id
                     ? 'bg-bg2 text-ink'
                     : 'text-ink2 hover:text-ink'
@@ -79,14 +79,14 @@ function Dashboard() {
             ))}
           </nav>
           <div className="flex-1" />
-          <div className="hidden md:flex items-center gap-2 bg-bg2 border border-line rounded-md px-3 py-1.5 text-[12px] text-ink3 min-w-[220px]">
+          <div className="hidden md:flex items-center gap-2 bg-bg2 border border-line rounded-md px-3.5 py-2 text-[14px] text-ink3 min-w-[240px]">
             <span>Search campaigns…</span>
             <span className="flex-1" />
-            <kbd className="font-mono text-[10px] bg-card border border-line rounded px-1 py-px">
+            <kbd className="font-mono text-[11px] bg-card border border-line rounded px-1.5 py-0.5">
               ⌘K
             </kbd>
           </div>
-          <div className="w-7 h-7 rounded-full bg-accent text-white flex items-center justify-center text-[11px] font-semibold">
+          <div className="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center text-[13px] font-semibold">
             AG
           </div>
         </div>
@@ -96,16 +96,16 @@ function Dashboard() {
         {/* Title row */}
         <div className="pt-7 pb-5 flex items-end justify-between gap-4">
           <div>
-            <h1 className="text-[24px] font-semibold tracking-[-0.015em] m-0">
+            <h1 className="text-[28px] font-semibold tracking-[-0.015em] m-0">
               {TABS.find((t) => t.id === tab)?.label}
             </h1>
-            <div className="text-[14px] text-ink3 mt-1.5">
+            <div className="text-[15px] text-ink3 mt-1.5">
               {TABS.find((t) => t.id === tab)?.description}
             </div>
           </div>
           <div className="flex gap-2 items-center">
             <PeriodSelector />
-            <button className="px-3 py-1.5 text-[12px] bg-card border border-line rounded-md text-ink2 hover:text-ink hover:border-line2 font-medium transition-colors">
+            <button className="px-3.5 py-2 text-[14px] bg-card border border-line rounded-md text-ink2 hover:text-ink hover:border-line2 font-medium transition-colors">
               Export
             </button>
           </div>
@@ -209,7 +209,7 @@ function Dashboard() {
           </div>
         )}
 
-        <div className="mt-10 pt-4 border-t border-line flex justify-between text-[12px] text-ink3">
+        <div className="mt-10 pt-4 border-t border-line flex justify-between text-[13px] text-ink3">
           <span>Last sync 14:22 UTC · auto-refresh 5m</span>
           <span>MediaPulse · {period.label}</span>
         </div>
@@ -234,7 +234,7 @@ function FunnelGuide() {
       </div>
       <div className="flex flex-col gap-2.5">
         {rows.map(([n, name, desc]) => (
-          <div key={n} className="flex gap-3 text-[12.5px] leading-[1.55]">
+          <div key={n} className="flex gap-3 text-[14px] leading-[1.55]">
             <span className="text-ink3 tnum flex-shrink-0 font-medium">{n}</span>
             <div>
               <span className="text-ink font-semibold">{name}</span>
@@ -243,7 +243,7 @@ function FunnelGuide() {
           </div>
         ))}
       </div>
-      <div className="mt-4 pt-4 border-t border-line text-[11.5px] text-ink3 leading-relaxed">
+      <div className="mt-4 pt-4 border-t border-line text-[13px] text-ink3 leading-relaxed">
         The percentages on the funnel show conversion rate from the previous stage. Big drop-offs are
         the best places to test fixes.
       </div>

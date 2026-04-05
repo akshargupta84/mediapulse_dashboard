@@ -57,10 +57,10 @@ export function ChannelDeepDive({ period }: Props) {
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="px-3 py-1.5 text-[12px] bg-card border border-line text-ink2 hover:text-ink hover:border-line2 flex items-center gap-2 rounded-md min-w-[200px] justify-between transition-colors font-medium"
+        className="px-3.5 py-2 text-[14px] bg-card border border-line text-ink2 hover:text-ink hover:border-line2 flex items-center gap-2 rounded-md min-w-[200px] justify-between transition-colors font-medium"
       >
         <span className="text-ink font-semibold">{channel.name}</span>
-        <ChevronDown size={13} className={`text-ink3 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown size={14} className={`text-ink3 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
         <div className="absolute right-0 top-full mt-1 w-[240px] bg-card border border-line rounded-md shadow-card-hover p-1 z-30">
@@ -73,12 +73,12 @@ export function ChannelDeepDive({ period }: Props) {
                   setSelectedName(c.name)
                   setOpen(false)
                 }}
-                className={`w-full text-left px-3 py-2 text-[12px] flex items-center justify-between rounded transition-colors ${
+                className={`w-full text-left px-3 py-2 text-[14px] flex items-center justify-between rounded transition-colors ${
                   active ? 'bg-bg2 text-ink font-semibold' : 'text-ink2 hover:bg-bg2 hover:text-ink'
                 }`}
               >
                 <span>{c.name}</span>
-                <span className="tnum text-[11px] text-ink3">{c.roas}×</span>
+                <span className="tnum text-[13px] text-ink3">{c.roas}×</span>
               </button>
             )
           })}
@@ -114,10 +114,10 @@ export function ChannelDeepDive({ period }: Props) {
               </linearGradient>
             </defs>
             <CartesianGrid stroke={LINE} vertical={false} />
-            <XAxis dataKey="p" stroke="#8b8b93" fontSize={10} tickLine={false} axisLine={{ stroke: LINE }} />
+            <XAxis dataKey="p" stroke="#8b8b93" fontSize={12} tickLine={false} axisLine={{ stroke: LINE }} />
             <YAxis
               stroke="#8b8b93"
-              fontSize={10}
+              fontSize={12}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) => `$${v}K`}
@@ -129,7 +129,7 @@ export function ChannelDeepDive({ period }: Props) {
                 border: `1px solid ${LINE}`,
                 borderRadius: 6,
                 color: INK,
-                fontSize: 11,
+                fontSize: 13,
                 fontFamily: '"IBM Plex Sans", sans-serif',
                 boxShadow: '0 2px 8px rgba(26,26,31,0.06)',
               }}
@@ -152,7 +152,7 @@ export function ChannelDeepDive({ period }: Props) {
 
       {channelCampaigns.length > 0 && (
         <div className="mt-5">
-          <div className="text-[11px] text-ink3 font-medium mb-2">
+          <div className="text-[13px] text-ink3 font-medium mb-2">
             Top {channel.name} campaigns
           </div>
           <div className="flex flex-col">
@@ -161,8 +161,8 @@ export function ChannelDeepDive({ period }: Props) {
                 key={c.name}
                 className={`flex justify-between items-center py-2 ${i > 0 ? 'border-t border-line' : ''}`}
               >
-                <span className="text-[12px] text-ink font-medium truncate mr-3">{c.name}</span>
-                <span className="flex gap-4 tnum text-[11.5px] flex-shrink-0">
+                <span className="text-[14px] text-ink font-medium truncate mr-3">{c.name}</span>
+                <span className="flex gap-4 tnum text-[13px] flex-shrink-0">
                   <span className="text-ink2">${c.spend}K</span>
                   <span
                     className={
@@ -183,12 +183,12 @@ export function ChannelDeepDive({ period }: Props) {
 
 function Stat({ label, value, sub }: { label: string; value: string; sub: string }) {
   return (
-    <div className="border border-line rounded-md px-3 py-2.5 bg-bg">
-      <div className="text-[10px] text-ink3 font-medium uppercase tracking-[0.03em]">{label}</div>
-      <div className="text-[22px] font-semibold text-ink leading-tight mt-0.5 tnum tracking-[-0.02em]">
+    <div className="border border-line rounded-md px-3.5 py-3 bg-bg">
+      <div className="text-[12px] text-ink3 font-medium uppercase tracking-[0.03em]">{label}</div>
+      <div className="text-[24px] font-semibold text-ink leading-tight mt-0.5 tnum tracking-[-0.02em]">
         {value}
       </div>
-      <div className="text-[10.5px] text-ink3 mt-0.5">{sub}</div>
+      <div className="text-[12.5px] text-ink3 mt-0.5">{sub}</div>
     </div>
   )
 }

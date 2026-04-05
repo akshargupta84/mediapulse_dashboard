@@ -23,17 +23,17 @@ export function FunnelChart({ period }: Props) {
             <div key={s.name}>
               <div className="flex justify-between items-center mb-1.5">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-6 h-6 rounded-full bg-bg2 border border-line flex items-center justify-center text-[10px] font-semibold text-ink2 tnum">
+                  <div className="w-7 h-7 rounded-full bg-bg2 border border-line flex items-center justify-center text-[12px] font-semibold text-ink2 tnum">
                     {i + 1}
                   </div>
-                  <span className="text-[13px] font-medium text-ink">{s.name}</span>
+                  <span className="text-[15px] font-medium text-ink">{s.name}</span>
                 </div>
                 <div className="flex gap-4 items-baseline">
-                  <span className="text-[13px] font-semibold text-ink tnum">
+                  <span className="text-[15px] font-semibold text-ink tnum">
                     {formatLongCount(s.value)}
                   </span>
                   {i > 0 && (
-                    <span className="text-[11px] text-ink3 tnum min-w-[46px] text-right">
+                    <span className="text-[13px] text-ink3 tnum min-w-[46px] text-right">
                       {s.conversion}%
                     </span>
                   )}
@@ -49,7 +49,7 @@ export function FunnelChart({ period }: Props) {
                 />
               </div>
               {!isLast && (
-                <div className="text-[10.5px] text-ink3 mt-1 ml-8">
+                <div className="text-[12.5px] text-ink3 mt-1 ml-8">
                   ↳ {(((s.value - stages[i + 1].value) / s.value) * 100).toFixed(1)}% drop-off to next stage
                 </div>
               )}
@@ -82,11 +82,11 @@ export function FunnelChart({ period }: Props) {
 function FunnelStat({ label, value, sub }: { label: string; value: string; sub: string }) {
   return (
     <div className="border border-line rounded-md px-3.5 py-3 bg-bg">
-      <div className="text-[10px] text-ink3 font-medium uppercase tracking-[0.03em]">{label}</div>
-      <div className="text-[24px] font-semibold text-ink leading-tight mt-0.5 tnum tracking-[-0.02em]">
+      <div className="text-[12px] text-ink3 font-medium uppercase tracking-[0.03em]">{label}</div>
+      <div className="text-[26px] font-semibold text-ink leading-tight mt-0.5 tnum tracking-[-0.02em]">
         {value}
       </div>
-      <div className="text-[10.5px] text-ink3 mt-0.5">{sub}</div>
+      <div className="text-[12.5px] text-ink3 mt-0.5">{sub}</div>
     </div>
   )
 }

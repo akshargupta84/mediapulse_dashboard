@@ -37,11 +37,11 @@ export function PanelHeader({
   return (
     <div className="mb-4 flex items-start justify-between gap-4">
       <div>
-        <div className="text-[14.5px] font-semibold text-ink tracking-[-0.005em]">
+        <div className="text-[16px] font-semibold text-ink tracking-[-0.005em]">
           {title}
         </div>
         {subtitle && (
-          <div className="text-[12.5px] text-ink3 mt-1 font-medium">{subtitle}</div>
+          <div className="text-[14px] text-ink3 mt-1 font-medium">{subtitle}</div>
         )}
       </div>
       {right && <div className="flex-shrink-0">{right}</div>}

@@ -24,13 +24,13 @@ export function Tabs({ tabs, activeId, onChange }: Props) {
           <button
             key={t.id}
             onClick={() => onChange(t.id)}
-            className={`flex items-center gap-2 px-4 py-2.5 text-[13px] font-medium transition-colors relative -mb-px border-b-2 ${
+            className={`flex items-center gap-2 px-4 py-2.5 text-[15px] font-medium transition-colors relative -mb-px border-b-2 ${
               isActive
                 ? 'text-ink border-ink'
                 : 'text-ink3 hover:text-ink border-transparent'
             }`}
           >
-            <Icon size={14} />
+            <Icon size={16} />
             {t.label}
           </button>
         )

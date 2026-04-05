@@ -26,10 +26,10 @@ export function ChannelPanel({ period }: Props) {
             >
               <div className="flex items-center justify-between gap-2">
                 <div className="min-w-0">
-                  <span className="text-[13px] font-medium text-ink">{c.name}</span>
-                  <span className="text-[10px] text-ink3 ml-2">{c.roas}× ROAS · ${c.cpa} CPA</span>
+                  <span className="text-[15px] font-medium text-ink">{c.name}</span>
+                  <span className="text-[12px] text-ink3 ml-2">{c.roas}× ROAS · ${c.cpa} CPA</span>
                 </div>
-                <div className="text-[13px] font-semibold tnum text-ink min-w-[42px] text-right">
+                <div className="text-[15px] font-semibold tnum text-ink min-w-[42px] text-right">
                   {share.toFixed(0)}%
                 </div>
               </div>

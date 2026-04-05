@@ -33,7 +33,7 @@ export function TrendChart({ title = 'Spend & ROAS, weekly', subtitle, weeks, ro
       title={title}
       subtitle={subtitle}
       right={
-        <div className="flex gap-4 text-[11px] text-ink2">
+        <div className="flex gap-4 text-[13px] text-ink2">
           <Legend color={INK} label="Spend" />
           <Legend color={ACCENT} dashed label="ROAS" />
         </div>
@@ -52,14 +52,14 @@ export function TrendChart({ title = 'Spend & ROAS, weekly', subtitle, weeks, ro
             <XAxis
               dataKey="p"
               stroke="#8b8b93"
-              fontSize={10}
+              fontSize={12}
               tickLine={false}
               axisLine={{ stroke: LINE }}
             />
             <YAxis
               yAxisId="left"
               stroke="#8b8b93"
-              fontSize={10}
+              fontSize={12}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) => `$${v}K`}
@@ -69,7 +69,7 @@ export function TrendChart({ title = 'Spend & ROAS, weekly', subtitle, weeks, ro
               orientation="right"
               domain={domain}
               stroke="#8b8b93"
-              fontSize={10}
+              fontSize={12}
               tickLine={false}
               axisLine={false}
               tickFormatter={(v: number) => `${v}×`}
@@ -81,7 +81,7 @@ export function TrendChart({ title = 'Spend & ROAS, weekly', subtitle, weeks, ro
                 border: `1px solid ${LINE}`,
                 borderRadius: 6,
                 color: INK,
-                fontSize: 11,
+                fontSize: 13,
                 fontFamily: '"IBM Plex Sans", sans-serif',
                 boxShadow: '0 2px 8px rgba(26,26,31,0.06)',
                 padding: '8px 10px',
