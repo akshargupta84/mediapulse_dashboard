@@ -10,6 +10,7 @@ import { PeriodSelector } from './components/PeriodSelector'
 import { Tabs, type TabDef } from './components/Tabs'
 import { TrendChart } from './components/TrendChart'
 import { PeriodProvider, usePeriod } from './PeriodContext'
+import { AnalystProvider } from './AnalystContext'
 import { formatSpend, kpiDelta } from './data'
 
 const TABS: TabDef[] = [
@@ -58,7 +59,7 @@ function Dashboard() {
             <span className="text-[15px] font-semibold text-ink tracking-[-0.01em]">
               MediaPulse
             </span>
-            <span className="hidden lg:inline text-[12px] text-ink3 font-medium border-l border-line pl-2.5 ml-0.5">
+            <span className="hidden lg:inline text-[13.5px] text-ink2 font-medium border-l border-line pl-2.5 ml-0.5">
               Paid-media analytics with an embedded Claude analyst · demo dataset
             </span>
           </div>
@@ -98,7 +99,7 @@ function Dashboard() {
             <h1 className="text-[24px] font-semibold tracking-[-0.015em] m-0">
               {TABS.find((t) => t.id === tab)?.label}
             </h1>
-            <div className="text-[13px] text-ink3 mt-1">
+            <div className="text-[14px] text-ink3 mt-1.5">
               {TABS.find((t) => t.id === tab)?.description}
             </div>
           </div>
@@ -208,7 +209,7 @@ function Dashboard() {
           </div>
         )}
 
-        <div className="mt-10 pt-4 border-t border-line flex justify-between text-[11px] text-ink3">
+        <div className="mt-10 pt-4 border-t border-line flex justify-between text-[12px] text-ink3">
           <span>Last sync 14:22 UTC · auto-refresh 5m</span>
           <span>MediaPulse · {period.label}</span>
         </div>
@@ -253,7 +254,9 @@ function FunnelGuide() {
 export default function App() {
   return (
     <PeriodProvider>
-      <Dashboard />
+      <AnalystProvider>
+        <Dashboard />
+      </AnalystProvider>
     </PeriodProvider>
   )
 }

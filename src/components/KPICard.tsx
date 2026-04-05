@@ -31,24 +31,24 @@ export function KPICard({
   return (
     <div className="bg-card border border-line rounded-lg shadow-card p-4 pb-3">
       <div className="flex items-center justify-between mb-2">
-        <div className="text-[11px] text-ink3 font-medium uppercase tracking-[0.02em]">
+        <div className="text-[12px] text-ink3 font-medium uppercase tracking-[0.02em]">
           {label}
         </div>
       </div>
 
-      <div className="text-[28px] font-semibold text-ink leading-none tnum tracking-[-0.02em]">
+      <div className="text-[30px] font-semibold text-ink leading-none tnum tracking-[-0.02em]">
         {value}
       </div>
 
-      <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-ink2">
+      <div className="mt-2 flex items-center gap-2 text-[12.5px] text-ink2">
         <span
-          className={`px-1.5 py-[1px] rounded-full font-semibold text-[10px] tnum ${
+          className={`px-2 py-[2px] rounded-full font-semibold text-[11.5px] tnum ${
             positive ? 'bg-upBg text-up' : 'bg-downBg text-down'
           }`}
         >
           {delta}
         </span>
-        <span className="text-ink3 text-[10.5px]">{deltaLabel}</span>
+        <span className="text-ink3 text-[12px]">{deltaLabel}</span>
       </div>
 
       <div className="h-[28px] mt-3">

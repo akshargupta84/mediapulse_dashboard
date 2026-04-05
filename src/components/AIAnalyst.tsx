@@ -3,8 +3,7 @@ import { KeyRound, Send, Sparkles } from 'lucide-react'
 import { askClaude, USES_PROXY, type ChatMessage } from '../claude'
 import { buildAnalystContext } from '../data'
 import { usePeriod } from '../PeriodContext'
-
-const STORAGE_KEY = 'mediapulse_anthropic_key'
+import { useAnalyst } from '../AnalystContext'
 
 const SAMPLE_QS = [
   { short: 'Best channel', full: 'Which channel has the best ROAS and why?' },
@@ -17,27 +16,32 @@ export function AIAnalyst() {
   const { period } = usePeriod()
   const systemPrompt = useMemo(() => buildAnalystContext(period), [period])
 
-  const [messages, setMessages] = useState<ChatMessage[]>(() => [
-    {
-      role: 'assistant',
-      content: `Full portfolio loaded: Q3 2024 → Q1 2025. Currently viewing ${period.label}.\n\nAsk me anything — single quarter, cross-quarter trends, channel performance, or optimization ideas.`,
-    },
-  ])
+  const {
+    messages,
+    setMessages,
+    input,
+    setInput,
+    busy,
+    setBusy,
+    apiKey,
+    setApiKey,
+  } = useAnalyst()
 
+  // Seed the greeting exactly once (first time the component ever mounts
+  // in this session). Subsequent mounts — e.g. after tab switch — reuse
+  // whatever is already in context, preserving the conversation.
   useEffect(() => {
-    setMessages([
-      {
-        role: 'assistant',
-        content: `Now viewing ${period.label} (${period.sublabel}). Full portfolio (all quarters) is still in context — ask about any period or compare across them.`,
-      },
-    ])
-  }, [period.id, period.label, period.sublabel])
+    if (messages.length === 0) {
+      setMessages([
+        {
+          role: 'assistant',
+          content: `Full portfolio loaded: Q3 2024 → Q1 2025. Currently viewing ${period.label}.\n\nAsk me anything — single quarter, cross-quarter trends, channel performance, or optimization ideas.`,
+        },
+      ])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  const [input, setInput] = useState('')
-  const [busy, setBusy] = useState(false)
-  const [apiKey, setApiKey] = useState<string>(() =>
-    typeof window !== 'undefined' ? localStorage.getItem(STORAGE_KEY) ?? '' : '',
-  )
   const [keyOpen, setKeyOpen] = useState(false)
   const [tempKey, setTempKey] = useState('')
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -77,18 +81,17 @@ export function AIAnalyst() {
   function saveKey() {
     const k = tempKey.trim()
     if (!k) return
-    setApiKey(k)
-    localStorage.setItem(STORAGE_KEY, k)
+    setApiKey(k) // context setter persists to localStorage automatically
     setTempKey('')
     setKeyOpen(false)
   }
 
   return (
-    <div className="bg-card border border-line rounded-lg shadow-card flex flex-col overflow-hidden min-h-[430px]">
+    <div className="bg-card border border-line rounded-lg shadow-card flex flex-col overflow-hidden min-h-[480px]">
       <div className="px-4 py-3 border-b border-line flex items-center gap-2 flex-shrink-0 bg-bg2/50">
-        <Sparkles size={13} className="text-accent" />
-        <span className="text-[13px] font-semibold text-ink">Claude analyst</span>
-        <span className="ml-auto text-[10px] text-ink3 border border-line rounded-full px-2 py-0.5 font-medium">
+        <Sparkles size={15} className="text-accent" />
+        <span className="text-[14.5px] font-semibold text-ink">Claude analyst</span>
+        <span className="ml-auto text-[11px] text-ink3 border border-line rounded-full px-2 py-0.5 font-medium">
           {USES_PROXY ? 'Proxy' : 'Direct'}
         </span>
         {!USES_PROXY && (
@@ -104,19 +107,19 @@ export function AIAnalyst() {
 
       <div
         ref={scrollRef}
-        className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 min-h-0 max-h-[310px]"
+        className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 min-h-0 max-h-[360px]"
       >
         {messages.map((m, i) => (
           <div key={i} className="flex flex-col gap-1">
             <div
-              className={`text-[10px] font-semibold uppercase tracking-[0.04em] ${
+              className={`text-[11px] font-semibold uppercase tracking-[0.04em] ${
                 m.role === 'user' ? 'text-accent' : 'text-ink3'
               }`}
             >
               {m.role === 'user' ? 'You' : 'Claude'}
             </div>
             <div
-              className={`whitespace-pre-wrap text-[12.5px] leading-[1.55] rounded-md px-3 py-2 ${
+              className={`whitespace-pre-wrap text-[13.5px] leading-[1.6] rounded-md px-3 py-2.5 ${
                 m.role === 'user'
                   ? 'bg-bg2 text-ink'
                   : 'bg-card text-ink border border-line'
@@ -127,8 +130,8 @@ export function AIAnalyst() {
           </div>
         ))}
         {busy && (
-          <div className="flex items-center gap-2 text-ink3 text-[12px] px-3 py-2">
-            <span className="text-[10px] font-semibold uppercase tracking-[0.04em]">Claude</span>
+          <div className="flex items-center gap-2 text-ink3 text-[13px] px-3 py-2">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.04em]">Claude</span>
             <span>thinking</span>
             <span className="flex gap-0.5">
               <Dot delay={0} />
@@ -151,7 +154,7 @@ export function AIAnalyst() {
               }
             }}
             placeholder="Ask about performance, budgets, optimization…"
-            className="flex-1 bg-transparent outline-none text-[12.5px] placeholder:text-ink3 text-ink"
+            className="flex-1 bg-transparent outline-none text-[13.5px] placeholder:text-ink3 text-ink"
           />
           <button
             onClick={() => void send()}
@@ -167,7 +170,7 @@ export function AIAnalyst() {
             <button
               key={q.full}
               onClick={() => void send(q.full)}
-              className="text-[10.5px] text-ink2 bg-bg2 border border-line rounded-full px-2.5 py-1 hover:border-ink3 hover:text-ink transition-colors font-medium"
+              className="text-[11.5px] text-ink2 bg-bg2 border border-line rounded-full px-2.5 py-1 hover:border-ink3 hover:text-ink transition-colors font-medium"
             >
               {q.short}
             </button>

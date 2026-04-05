@@ -24,7 +24,7 @@ export async function askClaude(
     const res = await fetch(ANALYST_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model, system, messages, max_tokens: 800 }),
+      body: JSON.stringify({ model, system, messages, max_tokens: 1200 }),
     })
     if (!res.ok) {
       const errText = await res.text()
@@ -45,7 +45,7 @@ export async function askClaude(
     },
     body: JSON.stringify({
       model,
-      max_tokens: 800,
+      max_tokens: 1200,
       system,
       messages,
     }),
