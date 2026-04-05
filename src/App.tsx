@@ -58,6 +58,9 @@ function Dashboard() {
             <span className="text-[15px] font-semibold text-ink tracking-[-0.01em]">
               MediaPulse
             </span>
+            <span className="hidden lg:inline text-[12px] text-ink3 font-medium border-l border-line pl-2.5 ml-0.5">
+              Paid-media analytics with an embedded Claude analyst · demo dataset
+            </span>
           </div>
           <nav className="flex gap-1 ml-2">
             {TABS.map((t) => (

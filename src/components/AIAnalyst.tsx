@@ -8,9 +8,9 @@ const STORAGE_KEY = 'mediapulse_anthropic_key'
 
 const SAMPLE_QS = [
   { short: 'Best channel', full: 'Which channel has the best ROAS and why?' },
-  { short: 'Rebalance', full: 'How should I rebalance next quarter based on this one?' },
-  { short: 'CPA drivers', full: 'What drove the change in CPA over this period?' },
-  { short: 'Summary', full: 'Give me a 5-bullet executive summary of this period.' },
+  { short: 'QoQ trend', full: 'How has blended ROAS evolved from Q3 2024 to Q1 2025?' },
+  { short: 'Biggest win', full: 'What was the biggest performance improvement across the full dataset?' },
+  { short: 'Summary', full: 'Give me a 5-bullet executive summary of the full portfolio.' },
 ]
 
 export function AIAnalyst() {
@@ -20,7 +20,7 @@ export function AIAnalyst() {
   const [messages, setMessages] = useState<ChatMessage[]>(() => [
     {
       role: 'assistant',
-      content: `Context loaded: ${period.label} (${period.sublabel}).\n\nAsk me about campaign performance, budget allocation, or optimization opportunities.`,
+      content: `Full portfolio loaded: Q3 2024 → Q1 2025. Currently viewing ${period.label}.\n\nAsk me anything — single quarter, cross-quarter trends, channel performance, or optimization ideas.`,
     },
   ])
 
@@ -28,7 +28,7 @@ export function AIAnalyst() {
     setMessages([
       {
         role: 'assistant',
-        content: `Context reloaded: ${period.label} (${period.sublabel}).\n\nAsk me about performance, budget, or optimization.`,
+        content: `Now viewing ${period.label} (${period.sublabel}). Full portfolio (all quarters) is still in context — ask about any period or compare across them.`,
       },
     ])
   }, [period.id, period.label, period.sublabel])

@@ -321,42 +321,55 @@ export function formatLongCount(value: number): string {
 }
 
 // ---------------------------------------------------------------------------
-// AI Analyst context — generated dynamically from the selected period so the
-// model's answers are always grounded in the data the user is actually viewing.
+// AI Analyst context — includes the FULL dataset across every period so the
+// model can answer cross-quarter questions (trends, comparisons, growth, etc.)
+// regardless of which period the user happens to be viewing on-screen.
 // ---------------------------------------------------------------------------
-export function buildAnalystContext(period: PeriodData): string {
-  const lines: string[] = [
-    `You are a senior paid media analytics expert looking at the MediaPulse ${period.label} (${period.sublabel}) portfolio.`,
-    ``,
-    `PORTFOLIO TOTALS (${period.label}):`,
-    `• Spend: $${period.kpis.spend}K`,
-    `• Blended ROAS: ${period.kpis.roas}×`,
-    `• Impressions: ${period.kpis.impressions}M`,
-    `• Avg CPA: $${period.kpis.cpa}`,
-    `• Conversions: ${period.kpis.conversions.toLocaleString()}`,
-    `• Revenue: $${period.kpis.revenue}M`,
-    ``,
-    `CHANNELS:`,
-    ...period.channels.map(
+function renderPeriodBlock(p: PeriodData, isCurrent: boolean): string[] {
+  const header = isCurrent
+    ? `===== ${p.label} (${p.sublabel})  ◀ currently viewing on screen =====`
+    : `===== ${p.label} (${p.sublabel}) =====`
+  return [
+    header,
+    `Portfolio: $${p.kpis.spend}K spend · ${p.kpis.roas}× ROAS · ${p.kpis.impressions}M impr · $${p.kpis.cpa} CPA · ${p.kpis.conversions.toLocaleString()} conv · $${p.kpis.revenue}M revenue`,
+    `Channels:`,
+    ...p.channels.map(
       (c) =>
-        `• ${c.name}: $${c.spend}K spend | ${c.roas}× ROAS | $${c.cpa} CPA | ${c.conversions.toLocaleString()} conv | ${c.impressions}M impr`,
+        `  • ${c.name}: $${c.spend}K spend | ${c.roas}× ROAS | $${c.cpa} CPA | ${c.conversions.toLocaleString()} conv | ${c.impressions}M impr | ${c.ctr}% CTR`,
+    ),
+    `Weekly (spend $K / ROAS × / CPA $ / impr M):`,
+    ...p.weeks.map(
+      (w) => `  • ${w.p}: $${w.spend}K · ${w.roas}× · $${w.cpa} · ${w.impr}M`,
+    ),
+    `Campaigns:`,
+    ...p.campaigns.map(
+      (c) =>
+        `  • ${c.name} [${c.channel}]: $${c.spend}K · ${c.roas}× · $${c.cpa} CPA · ${c.conversions.toLocaleString()} conv · ${c.status}`,
+    ),
+    `Funnel:`,
+    ...p.funnel.map(
+      (s) => `  • ${s.name}: ${s.value.toLocaleString()} (${s.conversion}% from previous)`,
     ),
     ``,
-    `WEEKLY TREND (spend $K / ROAS × / CPA $):`,
-    ...period.weeks.map((w) => `• ${w.p}: $${w.spend}K · ${w.roas}× · $${w.cpa}`),
-    ``,
-    `TOP CAMPAIGNS (by spend):`,
-    ...period.campaigns
-      .slice(0, 6)
-      .map(
-        (c) =>
-          `• ${c.name} [${c.channel}]: $${c.spend}K · ${c.roas}× · $${c.cpa} CPA · ${c.status}`,
-      ),
-    ``,
-    `FUNNEL:`,
-    ...period.funnel.map((s) => `• ${s.name}: ${s.value.toLocaleString()} (${s.conversion}% from previous)`),
-    ``,
-    `Rules: Be direct, specific, and actionable. Ground every claim in the numbers above. Use • for bullet lists. Max 150 words.`,
   ]
-  return lines.join('\n')
+}
+
+export function buildAnalystContext(currentPeriod: PeriodData): string {
+  const intro: string[] = [
+    `You are a senior paid-media analytics expert with access to the full MediaPulse portfolio across every tracked quarter.`,
+    ``,
+    `The dashboard on screen is currently showing ${currentPeriod.label} (${currentPeriod.sublabel}), but you have the complete dataset for all periods below. You may answer questions about any period, compare across periods, discuss trends or growth, and call out cross-quarter patterns — even if the user is viewing a different quarter.`,
+    ``,
+    `FULL DATASET — ${PERIODS.length} quarters, ordered oldest → newest:`,
+    ``,
+  ]
+  const blocks = PERIODS.flatMap((p) => renderPeriodBlock(p, p.id === currentPeriod.id))
+  const rules: string[] = [
+    `Rules:`,
+    `• Be direct, specific, and actionable. Ground every claim in the numbers above.`,
+    `• When the user's question is about "this period" or references visible numbers, assume they mean ${currentPeriod.label} unless they say otherwise.`,
+    `• When asked about trends, growth, or comparisons, freely use data from all quarters.`,
+    `• Use • for bullet lists. Max 150 words.`,
+  ]
+  return [...intro, ...blocks, ...rules].join('\n')
 }
